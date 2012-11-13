@@ -1,24 +1,34 @@
 # Laddin
-
-TODO: Write a gem description
+Generates tutorials using the set of markdown documents provided by the author.
 
 ## Installation
-
 Add this line to your application's Gemfile:
 
     gem 'laddin'
 
 And then execute:
 
-    $ bundle
+    $> easy_install Pygments
+    $> bundle install
 
 Or install it yourself as:
 
-    $ gem install laddin
+    $> easy_install Pygments
+    $> gem install aladdin
 
 ## Usage
+Create a new directory for your notes _e.g._ `my_tutorial`. Change into that
+directory, and create your notes using GitHub-Flavored Markdown. It might look
+like:
 
-TODO: Write usage instructions here
+  my_tutorial/
+    01-introduction.md
+    02-the-beginning.md
+    03-the-end.md
+
+Finally, execute aladdin to launch the Sinatra server:
+
+  $> aladdin
 
 ## Contributing
 
