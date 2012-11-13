@@ -1,5 +1,5 @@
 # Aladdin
-[![Build Status](https://secure.travis-ci.org/jimjh/reaction.png?branch=master)](https://travis-ci.org/jimjh/reaction)
+[![Build Status](https://secure.travis-ci.org/jimjh/aladdin.png?branch=master)](https://travis-ci.org/jimjh/aladdin)
 [![Dependency Status](https://gemnasium.com/jimjh/aladdin.png)](https://gemnasium.com/jimjh/aladdin)
 [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/jimjh/aladdin)
 
