@@ -1,4 +1,8 @@
-# Laddin
+# Aladdin
+[![Build Status](https://secure.travis-ci.org/jimjh/reaction.png?branch=master)](https://travis-ci.org/jimjh/reaction)
+[![Dependency Status](https://gemnasium.com/jimjh/aladdin.png)](https://gemnasium.com/jimjh/aladdin)
+[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/jimjh/aladdin)
+
 Generates tutorials using the set of markdown documents provided by the author.
 
 ## Installation
