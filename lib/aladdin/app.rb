@@ -9,13 +9,13 @@ module Aladdin
 
     # Default markdown options.
     MARKDOWN_OPTIONS = {
-      renderer: Aladdin::Render::HTML,
-      no_intra_emphasis: true,
-      tables: true,
+      renderer:           Aladdin::Render::HTML,
+      no_intra_emphasis:  true,
+      tables:             true,
       fenced_code_blocks: true,
-      autolink: true,
-      strikethrough: true,
-      layout_engine: :haml
+      autolink:           true,
+      strikethrough:      true,
+      layout_engine:      :haml
     }
 
     class << self

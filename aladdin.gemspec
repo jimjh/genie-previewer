@@ -35,6 +35,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'haml', '~> 3.1'
   gem.add_dependency 'redcarpet', '~> 2.2'
   gem.add_dependency 'albino', '~> 1.3'
+  gem.add_dependency 'sanitize', '~>2.0.3'
   gem.add_dependency 'colorize'
 
   # DEVELOPMENT AND DOCUMENTATION
