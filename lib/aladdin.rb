@@ -5,7 +5,6 @@ require 'albino'
 require 'haml'
 require 'redcarpet'
 
-require 'aladdin/version'
 require 'aladdin/render/markdown'
 
 # Aladdin is for tutorial apps.
@@ -13,11 +12,9 @@ module Aladdin
 
   # Launches the tutorial app using 'thin' as the default webserver.
   # @option opts [String] from        path to author's markdown documents;
-  #                                   defaults to the current working
-  #                                   directory.
+  #                                   defaults to the current working directory
   def self.launch(opts = {})
-    Aladdin::VIEWS[:markdown] = opts[:from] || '.'
-    require 'aladdin/app'
+    Aladdin::App.set :views, Aladdin::VIEWS.merge(markdown: opts[:from] || '.')
     Aladdin::App.run!
   end
 
@@ -40,3 +37,5 @@ module Aladdin
   ).freeze
 
 end
+
+require 'aladdin/app'

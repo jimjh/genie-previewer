@@ -1,7 +1,9 @@
 # ~*~ encoding: utf-8 ~*~
 module Aladdin
 
-  # Sinatra app that serves the tutorial.
+  # Sinatra app that serves the tutorial. Should be able to use this in a
+  # config.ru file or as middleware. Authors should launch the app using the
+  # +bin/aladdin+ executable.
   # Adapted from https://github.com/jerodsanto/sinatra-foundation-skeleton/
   class App < Sinatra::Base
 
@@ -22,7 +24,6 @@ module Aladdin
       # Configures path to the views, with different paths for different file
       # types.
       def configure_views
-        set :views, Aladdin::VIEWS
         helpers do
           def find_template(views, name, engine, &block)
             _, dir = views.detect { |k,v| engine == Tilt[k] }
@@ -66,7 +67,7 @@ module Aladdin
     configure_views
     configure_markdown
 
-    configure :development do
+    configure :development, :test do
       configure_assets
       configure_compass
     end
