@@ -11,24 +11,21 @@ require 'aladdin/render/markdown'
 # Aladdin is for tutorial apps.
 module Aladdin
 
-  class << self
-
-    # Launches the tutorial app using 'thin' as the default webserver.
-    # @option opts [String] from        path to author's markdown documents;
-    #                                   defaults to the current working
-    #                                   directory.
-    def launch(opts = {})
-      Aladdin::VIEWS[:markdown] = opts[:from] || '.'
-      require 'aladdin/app'
-      Aladdin::App.run!
-    end
-
-    # Converts a hash to struct.
-    def to_struct(hash)
-      Struct.new( *(k = hash.keys) ).new( *hash.values_at( *k ) )
-    end
-
+  # Launches the tutorial app using 'thin' as the default webserver.
+  # @option opts [String] from        path to author's markdown documents;
+  #                                   defaults to the current working
+  #                                   directory.
+  def self.launch(opts = {})
+    Aladdin::VIEWS[:markdown] = opts[:from] || '.'
+    require 'aladdin/app'
+    Aladdin::App.run!
   end
+
+  # Converts a hash to struct.
+  def self.to_struct(hash)
+    Struct.new( *(k = hash.keys) ).new( *hash.values_at( *k ) )
+  end
+  private_class_method :to_struct
 
   # Paths to different types of views.
   VIEWS = {

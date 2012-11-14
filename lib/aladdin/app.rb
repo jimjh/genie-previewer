@@ -5,9 +5,22 @@ module Aladdin
   # Adapted from https://github.com/jerodsanto/sinatra-foundation-skeleton/
   class App < Sinatra::Base
 
-    class << self
+    # Default markdown options.
+    MARKDOWN_OPTIONS = {
+      renderer: Aladdin::Render::HTML,
+      no_intra_emphasis: true,
+      tables: true,
+      fenced_code_blocks: true,
+      autolink: true,
+      strikethrough: true,
+      layout_engine: :haml
+    }
 
-      # Configures path to the views.
+    class << self
+      private
+
+      # Configures path to the views, with different paths for different file
+      # types.
       def configure_views
         set :views, Aladdin::VIEWS
         helpers do
@@ -19,10 +32,14 @@ module Aladdin
         end
       end
 
+      # Configures path to static assets in the public folder.
+      def configure_assets
+        set :public_folder, Aladdin::PATHS.assets
+      end
+
       # Configures ZURB's compass to compile laddin's scss assets.
       def configure_compass
         Compass.configuration do |config|
-          config.project_path = Aladdin::PATHS.assets
           config.http_path = '/'
           config.http_images_path = '/images'
         end
@@ -33,31 +50,33 @@ module Aladdin
       # the github-flavored markdown as possible.
       def configure_markdown
         Tilt.register Tilt::RedcarpetTemplate::Redcarpet2, 'markdown', 'mkd', 'md'
-        set :markdown,
-          renderer: Aladdin::Render::HTML,
-          no_intra_emphasis: true,
-          tables: true,
-          fenced_code_blocks: true,
-          autolink: true,
-          strikethrough: true,
-          layout_engine: :haml
+        set :markdown, MARKDOWN_OPTIONS
       end
 
     end
 
-    configure do
-      configure_views
-      configure_compass
-      configure_markdown
+    # Calls the given +block+ and invokes +pass+ on error.
+    # @param block        block to call within wrapper
+    def render_or_pass(&block)
+      begin return block.call
+      rescue pass
+      end
     end
 
-    get '/' do
-      haml :index
+    configure_views
+    configure_markdown
+
+    configure :development do
+      configure_assets
+      configure_compass
     end
 
     get '/stylesheets/*.css' do |path|
-      content_type 'text/css', charset: 'utf-8'
-      scss path.to_sym
+      render_or_pass { scss path.to_sym }
+    end
+
+    get '/*' do |path|
+      render_or_pass { markdown path.to_sym }
     end
 
   end

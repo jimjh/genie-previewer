@@ -11,7 +11,7 @@ module Aladdin
     class HTML < ::Redcarpet::Render::HTML
 
       # Creates a new HTML renderer.
-      # @param [Hash] hash        described in the RedCarpet documentation.
+      # @param [Hash] options        described in the RedCarpet documentation.
       def initialize(options = {})
         super options.merge(hard_wrap: true, safe_links_only: true)
       end
