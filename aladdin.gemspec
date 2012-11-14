@@ -39,7 +39,6 @@ Gem::Specification.new do |gem|
 
   # DEVELOPMENT AND DOCUMENTATION
   gem.add_development_dependency 'yard', '~> 0.8.3'
-  gem.add_development_dependency 'debugger-pry', '~> 0.1.1'
   gem.add_development_dependency 'rspec', '~> 2.11.0'
   gem.add_development_dependency 'rack-test', '~> 0.6.2'
   gem.post_install_message = "\e[0;34;49m" +
