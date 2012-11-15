@@ -15,6 +15,7 @@ module Aladdin
       fenced_code_blocks: true,
       autolink:           true,
       strikethrough:      true,
+      tables:             true,
       layout_engine:      :haml
     }
 
@@ -64,10 +65,13 @@ module Aladdin
     # @param block        block to call within wrapper
     def render_or_pass(&block)
       begin return block.call
-      rescue pass
+      rescue Exception => e
+        logger.error e.message
+        pass
       end
     end
 
+    enable :logging
     configure_views
     configure_markdown
 
