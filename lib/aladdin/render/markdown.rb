@@ -10,6 +10,9 @@ module Aladdin
     # @see http://github.github.com/github-flavored-markdown/
     class HTML < ::Redcarpet::Render::HTML
 
+      @sanitize = Aladdin::Sanitize.new
+      class << self; attr_reader :sanitize; end
+
       # Creates a new HTML renderer.
       # @param [Hash] options        described in the RedCarpet documentation.
       def initialize(options = {})
@@ -19,8 +22,16 @@ module Aladdin
       # Pygmentizes code blocks.
       # @param [String] code        code block contents
       # @param [String] language    name of language, for syntax highlighting
+      # @return [String] highlighted code
       def block_code(code, language)
         Albino.colorize code, language
+      end
+
+      # Sanitizes the final document.
+      # @param [String] document    html document
+      # @return [String] sanitized document
+      def postprocess(document)
+        HTML.sanitize.clean document
       end
 
     end

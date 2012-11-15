@@ -4,7 +4,9 @@ require 'zurb-foundation'
 require 'albino'
 require 'haml'
 require 'redcarpet'
+require 'sanitize'
 
+require 'aladdin/render/sanitize'
 require 'aladdin/render/markdown'
 
 # Aladdin is for tutorial apps.
@@ -26,9 +28,9 @@ module Aladdin
 
   # Paths to different types of views.
   VIEWS = {
-    haml: File.expand_path('../../views/haml', __FILE__),
-    scss: File.expand_path('../../views/scss', __FILE__),
-    default: File.expand_path('../../views', __FILE__)
+    haml:     File.expand_path('../../views/haml', __FILE__),
+    scss:     File.expand_path('../../views/scss', __FILE__),
+    default:  File.expand_path('../../views', __FILE__)
   }
 
   # Paths to other parts of the library.

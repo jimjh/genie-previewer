@@ -35,10 +35,12 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'haml', '~> 3.1'
   gem.add_dependency 'redcarpet', '~> 2.2'
   gem.add_dependency 'albino', '~> 1.3'
+  gem.add_dependency 'sanitize', '~>2.0.3'
   gem.add_dependency 'colorize'
 
   # DEVELOPMENT AND DOCUMENTATION
   gem.add_development_dependency 'yard', '~> 0.8.3'
+  gem.add_development_dependency 'debugger-pry', '~> 0.1.1'
   gem.add_development_dependency 'rspec', '~> 2.12.0'
   gem.add_development_dependency 'rake', '~> 10.0.0'
   gem.add_development_dependency 'rack-test', '~> 0.6.2'
