@@ -22,14 +22,16 @@ module Aladdin
       # Pygmentizes code blocks.
       # @param [String] code        code block contents
       # @param [String] language    name of language, for syntax highlighting
+      # @return [String] highlighted code
       def block_code(code, language)
         Albino.colorize code, language
       end
 
       # Sanitizes the final document.
       # @param [String] document    html document
-      def post_process(document)
-        sanitize.clean document
+      # @return [String] sanitized document
+      def postprocess(document)
+        HTML.sanitize.clean document
       end
 
     end

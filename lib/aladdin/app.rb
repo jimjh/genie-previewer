@@ -23,6 +23,7 @@ module Aladdin
 
       # Configures path to the views, with different paths for different file
       # types.
+      # @return [void]
       def configure_views
         helpers do
           def find_template(views, name, engine, &block)
@@ -34,11 +35,13 @@ module Aladdin
       end
 
       # Configures path to static assets in the public folder.
+      # @return [void]
       def configure_assets
         set :public_folder, Aladdin::PATHS.assets
       end
 
       # Configures ZURB's compass to compile laddin's scss assets.
+      # @return [void]
       def configure_compass
         Compass.configuration do |config|
           config.http_path = '/'
@@ -49,6 +52,7 @@ module Aladdin
 
       # Registers redcarpet2 and laddin's markdown renderer to be as close to
       # the github-flavored markdown as possible.
+      # @return [void]
       def configure_markdown
         Tilt.register Tilt::RedcarpetTemplate::Redcarpet2, 'markdown', 'mkd', 'md'
         set :markdown, MARKDOWN_OPTIONS
