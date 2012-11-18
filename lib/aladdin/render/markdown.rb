@@ -21,10 +21,15 @@ module Aladdin
 
       # Pygmentizes code blocks.
       # @param [String] code        code block contents
-      # @param [String] language    name of language, for syntax highlighting
+      # @param [String] marker      name of language, for syntax highlighting
       # @return [String] highlighted code
-      def block_code(code, language)
-        Albino.colorize code, language
+      def block_code(code, marker)
+        language, type = marker.split ':'
+        case type
+        when 'demo'
+          puts Albino.colorize code, language
+        else Albino.colorize code, language
+        end
       end
 
       # Sanitizes the final document.
