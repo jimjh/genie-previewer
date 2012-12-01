@@ -34,6 +34,13 @@ Finally, execute aladdin to launch the Sinatra server:
 
     $> aladdin
 
+Note that the following directory names are reserved:
+
+- images
+- javascripts
+- stylesheets
+- verify
+
 ## Contributing
 
 1. Fork it
