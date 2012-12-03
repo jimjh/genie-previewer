@@ -6,6 +6,7 @@ require 'haml'
 require 'redcarpet'
 require 'sanitize'
 require 'yaml'
+require 'json'
 
 require 'aladdin/submission'
 require 'aladdin/render/sanitize'
@@ -66,6 +67,9 @@ module Aladdin
   PATHS = to_struct(
     assets: File.expand_path('../../assets', __FILE__),
   ).freeze
+
+  # FIXME
+  DATA_DIR = Dir.tmpdir
 
 end
 

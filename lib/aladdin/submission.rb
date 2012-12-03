@@ -15,16 +15,34 @@ module Aladdin
 
     # Creates a new student submission.
     # @param [String] id      exercise ID
+    # @param [Type]   type    quiz or code
     # @param [String] input   student input
-    def initialize(id, input)
-      @id = id
-      @input = input
+    def initialize(id, type, input)
+      @id, @type, @input = id, type, input
     end
 
     # Executes the verification script and returns the JSON-encoded results.
     # @example
     #     ./verify --id=0 --input=path/to/student/input
     def verify
+      case @type
+      when Type::CODE then verify_code
+      when Type::QUIZ then verify_quiz
+      end
+    end
+
+    private
+
+    def verify_quiz
+      # FIXME: rewrite?
+      # FIXME: directory attacks
+      solution = File.join Aladdin::DATA_DIR, "#{@id}.sol"
+      (@input.chomp == IO.read(solution).chomp).to_json
+    rescue
+      return false.to_json
+    end
+
+    def verify_code
       scratchspace do
         # FIXME: catch errors
         filename = SecureRandom.uuid
@@ -34,8 +52,6 @@ module Aladdin
         IO.read 'genie-results.json'
       end
     end
-
-    private
 
     def scratchspace
       enter_scratchspace
@@ -54,6 +70,14 @@ module Aladdin
       # TODO: handle errors
       Dir.chdir '..'
       FileUtils.rm_rf SCRATCHSPACE
+    end
+
+    # Submission Type, for use as enum.
+    module Type
+      # Quiz Type
+      QUIZ = 'quiz'
+      # Code Type
+      CODE = 'code'
     end
 
   end

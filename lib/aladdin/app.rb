@@ -88,10 +88,10 @@ module Aladdin
       render_or_pass { markdown path.to_sym }
     end
 
-    post '/verify/:id' do
+    post '/verify/:type/:id' do
       input = request.body.read
       content_type :json
-      Submission.new(params[:id], input).verify
+      Submission.new(params[:id], params[:type], input).verify
     end
 
   end

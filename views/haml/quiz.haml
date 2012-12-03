@@ -1,0 +1,14 @@
+%form{id: id}
+  %fieldset
+
+    %legend= q
+
+    - if choices.empty?
+      %input{type: 'text'}
+    - else
+      %select
+        -choices.each do |choice|
+          %option{value: choice[:label]}= choice[:option]
+
+    %input.q-id{type: 'hidden', value: id}
+    %a.button.submit{href: "#q_#{id}"} Submit
