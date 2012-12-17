@@ -42,7 +42,6 @@ module Aladdin
 
   # Reads configuration options from +.genie.yml+.
   def self.configure
-    # TODO: use recursion to allow multiple levels of nesting
     config = File.exists?(CONFIG_FILE) ? YAML.load_file(CONFIG_FILE) : {}
     @config = DEFAULT_CONFIG.merge(config) { |k, l, r|
       (l.is_a?(Hash) and r.is_a?(Hash)) ? l.merge(r) : r
@@ -68,7 +67,7 @@ module Aladdin
     assets: File.expand_path('../../assets', __FILE__),
   ).freeze
 
-  # FIXME
+  # FIXME: allow configuration?
   DATA_DIR = Dir.tmpdir
 
 end

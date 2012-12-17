@@ -8,7 +8,7 @@ module Aladdin
   # == DANGER DANGER DANGER ==
   # Because it assumes that there is only one submission at a time, it's
   # unsuitable for production use. This class does not impose any security
-  # restritions at all.
+  # restrictions at all.
   class Submission
 
     SCRATCHSPACE = '.__ss'
