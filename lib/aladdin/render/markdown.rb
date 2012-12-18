@@ -35,14 +35,8 @@ module Aladdin
       # File extension for solution files.
       EXT = '.sol'
 
-      # Markdown configuration options.
-      MARKDOWN_OPTIONS = {
-        no_intra_emphasis:  true,
-        tables:             true,
-        fenced_code_blocks: true,
-        autolink:           true,
-        strikethrough:      true,
-        tables:             true,
+      # Renderer configuration options.
+      CONFIGURATION = {
         hard_wrap:          true,
         safe_links_only:    true,
       }
@@ -50,7 +44,7 @@ module Aladdin
       # Creates a new HTML renderer.
       # @param [Hash] options        described in the RedCarpet documentation.
       def initialize(options = {})
-        super options.merge MARKDOWN_OPTIONS
+        super options.merge(CONFIGURATION)
         exe_template = File.join(Aladdin::VIEWS[:haml], 'exe.haml')
         @exe = Haml::Engine.new(File.read exe_template)
       end
