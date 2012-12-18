@@ -24,7 +24,8 @@ module Aladdin
       KEYS = [FORMAT, QUESTION, ANSWER]
 
       # Valid formats.
-      FORMATS = ['Mcq', 'Short']
+      # @comment FIXME should I generate this at runtime?
+      FORMATS = ['Mcq', 'Short', 'Table']
 
       # Parses the given text for questions and answers. If the given text
       # does not contain valid JSON or does not contain the format key, raises
@@ -57,7 +58,7 @@ module Aladdin
 
       # @return [Boolean] true iff the parsed json contains a valid question.
       def is_valid?
-        KEYS.reduce(true) { |memo, key| memo && @json.has_key?(key) }
+        KEYS.all? { |key| @json.has_key? key }
       end
 
       # Renders the given question using {#template}.

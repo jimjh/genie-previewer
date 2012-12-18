@@ -3,6 +3,7 @@ require 'aladdin/render/error'
 require 'aladdin/render/question'
 require 'aladdin/render/mcq'
 require 'aladdin/render/short'
+require 'aladdin/render/table'
 
 # ~*~ encoding: utf-8 ~*~
 module Aladdin

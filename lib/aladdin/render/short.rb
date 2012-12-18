@@ -5,7 +5,6 @@ module Aladdin
 
     # Renders short questions marked up in JSON as HTML.
     # @example
-    #
     #     {
     #       "format": "short",
     #       "question": "What is the most commonly used word in English?",
@@ -20,8 +19,8 @@ module Aladdin
       # @return [Boolean] true iff the json contains a valid MCQ.
       def is_valid?
         super and
-          @json[QUESTION].is_a? String and
-          not @json[ANSWER].empty?
+          question.is_a? String and
+          not answer.empty?
       end
 
     end

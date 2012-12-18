@@ -1,0 +1,12 @@
+%form
+  %fieldset
+
+    %table
+      -question.each do |row|
+        %tr
+          -row.each do |cell|
+            %td
+              - if cell == '?'
+                %input
+              - else
+                = cell
