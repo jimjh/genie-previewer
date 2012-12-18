@@ -27,25 +27,40 @@ module Aladdin
       # @comment FIXME should I generate this at runtime?
       FORMATS = ['Mcq', 'Short', 'Table']
 
-      # Parses the given text for questions and answers. If the given text
-      # does not contain valid JSON or does not contain the format key, raises
-      # an {Aladdin::Render::ParseError}.
-      # @param [String] text          markdown text
-      def self.parse(text)
-        json = JSON.parse text
-        raise ParseError.new("#{FORMAT} is required.") unless json.has_key?(FORMAT)
-        format = json[FORMAT].capitalize
-        raise ParseError.new('Unrecognized format: %p' % format) unless FORMATS.include?(format)
-        Aladdin::Render.const_get(format).new json
-      rescue JSON::JSONError => e
-        raise ParseError.new(e.message)
-      end
+      class << self
 
-      # Dynamically creates accessor methods for JSON values.
-      # @example
-      #   accessor :id
-      def self.accessor(*args)
-        args.each { |arg| define_method(arg) { @json[arg] } }
+        # Parses the given text for questions and answers. If the given text
+        # does not contain valid JSON or does not contain the format key, raises
+        # an {Aladdin::Render::ParseError}.
+        # @param [String] text          markdown text
+        def parse(text)
+          json = JSON.parse text
+          if json.is_a?(Hash) and json.has_key?(FORMAT)
+            get_instance(json)
+          else raise ParseError.new("Expected a JSON object containing the #{FORMAT} key.")
+          end
+        rescue JSON::JSONError => e
+          raise ParseError.new(e.message)
+        end
+
+        # Dynamically creates accessor methods for JSON values.
+        # @example
+        #   accessor :id
+        def accessor(*args)
+          args.each { |arg| define_method(arg) { @json[arg] } }
+        end
+
+        private
+
+        # @return [Question] question
+        def get_instance(json)
+          format = json[FORMAT].capitalize
+          if FORMATS.include?(format)
+            Aladdin::Render.const_get(format).new json
+          else raise ParseError.new('Unrecognized format: %p' % format)
+          end
+        end
+
       end
 
       accessor ID, *KEYS
@@ -54,11 +69,6 @@ module Aladdin
       def initialize(json)
         @json = json
         @json[ID] = SecureRandom.uuid if @json[ID].nil?
-      end
-
-      # @return [Boolean] true iff the parsed json contains a valid question.
-      def is_valid?
-        KEYS.all? { |key| @json.has_key? key }
       end
 
       # Renders the given question using {#template}.
@@ -70,6 +80,11 @@ module Aladdin
       end
 
       private
+
+      # @return [Boolean] true iff the parsed json contains a valid question.
+      def is_valid?
+        KEYS.all? { |key| @json.has_key? key }
+      end
 
       # Retrieves the +template+ singleton.
       def template
