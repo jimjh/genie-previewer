@@ -10,13 +10,7 @@ module Aladdin
     # Default markdown options.
     MARKDOWN_OPTIONS = {
       renderer:           Aladdin::Render::HTML,
-      no_intra_emphasis:  true,
-      tables:             true,
-      fenced_code_blocks: true,
-      autolink:           true,
-      strikethrough:      true,
-      tables:             true,
-      layout_engine:      :haml
+      layout_engine:      :haml,
     }
 
     class << self
@@ -51,8 +45,7 @@ module Aladdin
         set :scss, Compass.sass_engine_options
       end
 
-      # Registers redcarpet2 and laddin's markdown renderer to be as close to
-      # the github-flavored markdown as possible.
+      # Registers redcarpet2 and configures aladdin's markdown renderer.
       # @return [void]
       def configure_markdown
         Tilt.register Tilt::RedcarpetTemplate::Redcarpet2, 'markdown', 'mkd', 'md'
