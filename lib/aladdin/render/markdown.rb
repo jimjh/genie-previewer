@@ -1,41 +1,53 @@
+require 'aladdin/render/sanitize'
+require 'aladdin/render/error'
+require 'aladdin/render/question'
+require 'aladdin/render/mcq'
+
 # ~*~ encoding: utf-8 ~*~
 module Aladdin
 
-  # laddin-render module for all of Laddin's rendering needs.
+  # aladdin-render module for all of Laddin's rendering needs.
   module Render
 
     # HTML Renderer for Markdown.
+    #
     # It creates pygmentized code blocks, supports hard-wraps, and only
-    # generates links for protocols which are considered safe.
+    # generates links for protocols which are considered safe. Adds support for
+    # embedded JSON, which are used to markup quizzes and tables. Refer to
+    # {MARKDOWN_OPTIONS} for more details.
+    #
     # @see http://github.github.com/github-flavored-markdown/
     class HTML < ::Redcarpet::Render::HTML
+      include Aladdin::Mixin::Logger
 
       @sanitize = Aladdin::Sanitize.new
       class << self; attr_reader :sanitize; end
 
-      # The portion of the string before the first colon will be regarded as
-      # the choice label; the remaining portion of the string will become the
-      # choice text. An optional space may be present after the colon.
-      CHOICE_REGEX = %r[^([^:]+): ?(.+)$]
-
-      # The string must have the following format:
-      #
-      #     ? [answer] question
-      #
-      # It must begin with a question mark, contain a pair of square
-      # parentheses enclosing the answer, and some question text. The spaces
-      # separating each component are optional.
-      QUESTION_REGEX = %r[^\? ?\[([^\]]+)\] ?(.+)$]
+      # Paragraphs that start and end with braces are treated as JSON blocks
+      # and are parsed for questions/answers. If the paragraph does not contain
+      # valid JSON, it will be rendered as a simple text paragraph.
+      QUESTION_REGEX = %r[^\s*{[^}]+}\s*$]
 
       # File extension for solution files.
       EXT = '.sol'
 
+      # Markdown configuration options.
+      MARKDOWN_OPTIONS = {
+        no_intra_emphasis:  true,
+        tables:             true,
+        fenced_code_blocks: true,
+        autolink:           true,
+        strikethrough:      true,
+        tables:             true,
+        hard_wrap:          true,
+        safe_links_only:    true,
+      }
+
       # Creates a new HTML renderer.
       # @param [Hash] options        described in the RedCarpet documentation.
       def initialize(options = {})
-        super options.merge(hard_wrap: true, safe_links_only: true)
-        quiz_template = File.join(Aladdin::VIEWS[:haml], 'quiz.haml')
-        @quiz = Haml::Engine.new(File.read quiz_template)
+        super options.merge MARKDOWN_OPTIONS
+        @entities = HTMLEntities.new
         exe_template = File.join(Aladdin::VIEWS[:haml], 'exe.haml')
         @exe = Haml::Engine.new(File.read exe_template)
       end
@@ -54,14 +66,17 @@ module Aladdin
         end
       end
 
-      # Detects quiz blocks and renders options or text fields and renders them
-      # as forms.
+      # Detects question blocks and renders options or text fields and renders
+      # them as forms.
       # @param [String] text      paragraph text
       def paragraph(text)
-        return p(text) unless tokens = parse_question(text)
-        id = SecureRandom.uuid
-        IO.write File.join(Aladdin::DATA_DIR, id + EXT), tokens[:a]
-        @quiz.render Object.new, tokens.update(id: id)
+        return p(text) unless text.match QUESTION_REGEX
+        question = Question.parse(@entities.decode text)
+        IO.write File.join(Aladdin::DATA_DIR, question.id + EXT), question.answer
+        question.render
+      rescue Error => e # fall back to paragraph
+        logger.warn e.message
+        p(text)
       end
 
       # Sanitizes the final document.
@@ -87,27 +102,6 @@ module Aladdin
       # @return [String] wrapped text
       def p(text)
         '<p>' + text + '</p>'
-      end
-
-      # Parses the given array of lines for quiz choices and returns an array
-      # of options.
-      # @param [Array] lines          lines from markdown file
-      # @return [Array] options
-      def parse_choices(lines)
-        lines.map { |line|
-          match, label, option = *line.match(CHOICE_REGEX)
-          {label: label, option: option} if match
-        }.compact
-      end
-
-      # Parses the given text for quiz questions.
-      # @param [String] text          markdown text
-      # @return [Hash] tokens
-      def parse_question(text)
-        lines = text.split $/
-        return nil unless question = lines.shift and
-          tokens = question.match(QUESTION_REGEX)
-        {q: tokens[2], a: tokens[1], choices: parse_choices(lines)}
       end
 
     end
