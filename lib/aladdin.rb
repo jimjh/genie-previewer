@@ -4,12 +4,13 @@ require 'zurb-foundation'
 require 'albino'
 require 'haml'
 require 'redcarpet'
+require 'htmlentities'
 require 'sanitize'
 require 'yaml'
 require 'json'
 
 require 'aladdin/submission'
-require 'aladdin/render/sanitize'
+require 'aladdin/mixin/logger'
 require 'aladdin/render/markdown'
 
 # Aladdin is a gem that tutorial authors can use to preview and test their
