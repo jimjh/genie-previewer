@@ -3,12 +3,9 @@
 
     %legend= question
 
-    - if options.empty?
-      %input{type: 'text'}
-    - else
-      %select
-        -options.each do |value, label|
-          %option{value: value}= label
+    %select
+      -options.each do |value, label|
+        %option{value: value}= label
 
     -# %input.q-id{type: 'hidden', value: id}
     -# %a.button.submit{href: "#q_#{id}"} Submit

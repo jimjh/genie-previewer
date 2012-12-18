@@ -23,7 +23,7 @@ module Aladdin
       KEYS = [FORMAT, QUESTION, ANSWER]
 
       # Valid formats.
-      FORMATS = ['Mcq']
+      FORMATS = ['Mcq', 'Short']
 
       # Parses the given text for questions and answers. If the given text
       # does not contain valid JSON or does not contain the format key, raises
@@ -65,7 +65,9 @@ module Aladdin
 
       # Retrieves the +template+ singleton.
       def template
-        raise 'Not implemented.'
+        return @template unless @template.nil?
+        file = File.join Aladdin::VIEWS[:haml], template_file
+        @template = Haml::Engine.new(File.read file)
       end
 
     end

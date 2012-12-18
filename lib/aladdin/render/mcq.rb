@@ -11,8 +11,8 @@ module Aladdin
     #       "question": "How tall is Mount Everest?",
     #       "answer": "A",
     #       "options": {
-    #         "A": "0",
-    #         "B": "1"
+    #         "A": "452 inches",
+    #         "B": "8.85 kilometers"
     #       }
     #     }
     class Mcq < Question
@@ -21,12 +21,8 @@ module Aladdin
       # label -> choices.
       OPTIONS = 'options'
 
-      # Retrieves the +mcq+ singleton.
-      def template
-        return @mcq unless @mcq.nil?
-        template = File.join(Aladdin::VIEWS[:haml], 'mcq.haml')
-        @mcq = Haml::Engine.new(File.read template)
-      end
+      # Name of template file for rendering multiple choice questions.
+      TEMPLATE = 'mcq.haml'
 
       # Checks if the given json contains a valid MCQ.
       # @return [Boolean] true iff the json contains a valid MCQ.
@@ -36,6 +32,13 @@ module Aladdin
           @json[QUESTION].is_a? String and
           @json[ANSWER].is_a? String and
           @json[OPTIONS].is_a? Hash
+      end
+
+      private
+
+      # @return [String] name of template file for this question format.
+      def template_file
+        TEMPLATE
       end
 
     end

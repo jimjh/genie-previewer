@@ -2,6 +2,7 @@ require 'aladdin/render/sanitize'
 require 'aladdin/render/error'
 require 'aladdin/render/question'
 require 'aladdin/render/mcq'
+require 'aladdin/render/short'
 
 # ~*~ encoding: utf-8 ~*~
 module Aladdin
