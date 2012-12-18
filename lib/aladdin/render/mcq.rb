@@ -34,13 +34,6 @@ module Aladdin
           @json[OPTIONS].is_a? Hash
       end
 
-      private
-
-      # @return [String] name of template file for this question format.
-      def template_file
-        TEMPLATE
-      end
-
     end
 
   end

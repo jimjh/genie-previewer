@@ -22,7 +22,9 @@ module Aladdin
       include Aladdin::Mixin::Logger
 
       @sanitize = Aladdin::Sanitize.new
-      class << self; attr_reader :sanitize; end
+      @entities = HTMLEntities.new
+
+      class << self; attr_reader :sanitize, :entities; end
 
       # Paragraphs that start and end with braces are treated as JSON blocks
       # and are parsed for questions/answers. If the paragraph does not contain
@@ -48,7 +50,6 @@ module Aladdin
       # @param [Hash] options        described in the RedCarpet documentation.
       def initialize(options = {})
         super options.merge MARKDOWN_OPTIONS
-        @entities = HTMLEntities.new
         exe_template = File.join(Aladdin::VIEWS[:haml], 'exe.haml')
         @exe = Haml::Engine.new(File.read exe_template)
       end
@@ -72,7 +73,7 @@ module Aladdin
       # @param [String] text      paragraph text
       def paragraph(text)
         return p(text) unless text.match QUESTION_REGEX
-        question = Question.parse(@entities.decode text)
+        question = Question.parse(HTML.entities.decode text)
         IO.write File.join(Aladdin::DATA_DIR, question.id + EXT), question.answer
         question.render
       rescue Error => e # fall back to paragraph

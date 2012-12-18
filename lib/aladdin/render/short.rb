@@ -24,13 +24,6 @@ module Aladdin
           not @json[ANSWER].empty?
       end
 
-      private
-
-      # @return [String] name of template file for this question format
-      def template_file
-        TEMPLATE
-      end
-
     end
 
   end
