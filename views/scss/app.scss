@@ -50,9 +50,17 @@
 @import "github";
 
 div.meta.panel {
-  border-top: 2px solid black;
+  border-top: 2px solid $darkEdge;
 }
 
 a.hero img {
   width: 100%;
+}
+
+#sections {
+  background: darken($white, 2%);
+  padding-top: 10px;
+  width: $rowWidth + 20;
+  border-bottom: 2px solid $darkEdge;
+  z-index: 1;
 }

@@ -4,6 +4,7 @@ require 'aladdin/render/question'
 require 'aladdin/render/mcq'
 require 'aladdin/render/short'
 require 'aladdin/render/table'
+require 'aladdin/render/navigation'
 
 # ~*~ encoding: utf-8 ~*~
 module Aladdin
@@ -47,6 +48,7 @@ module Aladdin
         super options.merge(CONFIGURATION)
         exe_template = File.join(Aladdin::VIEWS[:haml], 'exe.haml')
         @exe = Haml::Engine.new(File.read exe_template)
+        @navigation = Navigation.new
       end
 
       # Pygmentizes code blocks.
@@ -76,17 +78,23 @@ module Aladdin
         p(text)
       end
 
-      # Increases all header levels by one.
+      # Increases all header levels by one and keeps track of document
+      # sections.
       def header(text, level)
         level += 1
-        "<h#{level}>#{text}</h#{level}>"
+        html = "<h#{level}>#{text}</h#{level}>"
+        if level == 2
+          index = @navigation << text
+          html += "<a name='section_#{index}' data-magellan-destination='section_#{index}'/>"
+        end
+        html
       end
 
       # Sanitizes the final document.
       # @param [String] document    html document
       # @return [String] sanitized document
       def postprocess(document)
-        HTML.sanitize.clean document
+        HTML.sanitize.clean(@navigation.render + document)
       end
 
       private

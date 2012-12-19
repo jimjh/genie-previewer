@@ -18,27 +18,29 @@
 %body
 
   .row
-    .six.columns
-      %h1= title
-      %h4
-        %img{src: 'images/no_gravatar.gif', width: 20, height: 20, alt: 'John Doe'}
-        %small John Doe
-      %h4.subheader= description
-      %div.panel.meta
-        %h6.subheader Dec 18, 2012 12:00PM
-        %ul.inline-list
-          -categories.each do |category|
-            %li
-              %a{href: '#'}=category
-    .six.columns
-      %h1
-        %a.th.hero{href: '#'}
-          %img{src: 'images/graphic.png'}
-    %hr/
 
-  .row
-    .twelve.columns
-      =yield
+    .row
+      .six.columns
+        %h1= title
+        %h4
+          %img{src: 'images/no_gravatar.gif', width: 20, height: 20, alt: 'John Doe'}
+          %small John Doe
+        %h4.subheader= description
+        %div.panel.meta
+          %h6.subheader Dec 18, 2012 12:00PM
+          %ul.inline-list
+            -categories.each do |category|
+              %li
+                %a{href: '#'}=category
+      .six.columns
+        %h1
+          %a.th.hero{href: '#'}
+            %img{src: 'images/graphic.png'}
+      %hr/
+
+    .row
+      .twelve.columns
+        =yield
 
   %script{src: 'javascripts/foundation/jquery.js'}
   %script{src: 'javascripts/foundation/jquery.cookie.js'}
