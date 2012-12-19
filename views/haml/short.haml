@@ -1,5 +1,11 @@
-%form
+%form.question{id: "question_#{id}"}
   %fieldset
 
     %legend= question
-    %input{type: 'text'}
+    %input.q-id{type: 'hidden', value: id}
+
+    .row.collapse
+      .ten.mobile-three.columns
+        %input{name: 'answer', type: 'text'}
+      .two.mobile-one.columns
+        %a.button.small.submit.expand.postfix.radius{href: '#'} Submit

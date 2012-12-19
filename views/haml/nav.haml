@@ -1,0 +1,4 @@
+%dl#sections.sub-nav{'data-magellan-expedition' => 'fixed'}
+  -sections.each_with_index do |section, i|
+    %dd{'data-magellan-arrival' => "section_#{i}"}
+      %a{href: "#section_#{i}"}= section

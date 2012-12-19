@@ -1,12 +1,25 @@
-%form
+%form.question{id: "question_#{id}"}
   %fieldset
 
-    %table
-      -question.each do |row|
-        %tr
-          -row.each do |cell|
-            %td
-              - if cell == '?'
-                %input
-              - else
-                = cell
+    %input.q-id{type: 'hidden', value: id}
+
+    .row.collapse
+      .ten.columns.mobile-three
+        %table
+          %thead
+            -if headings
+              %tr
+                -headings.each do |heading|
+                  %th= heading
+
+          %tbody
+            -question.each_with_index do |row, i|
+              %tr
+                -row.each_with_index do |cell, j|
+                  %td
+                    - if Aladdin::Render::Table.input? cell
+                      %input{name: "answer[#{i}][#{j}]", type: 'text'}
+                    - else
+                      = cell
+      .two.columns.mobile-one
+        %a.button.small.submit.expand.postfix.radius{href: '#'} Submit

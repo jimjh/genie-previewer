@@ -7,6 +7,9 @@ module Aladdin
   # Adapted from https://github.com/jerodsanto/sinatra-foundation-skeleton/
   class App < Sinatra::Base
 
+    # Default page
+    INDEX = :index
+
     # Default markdown options.
     MARKDOWN_OPTIONS = {
       renderer:           Aladdin::Render::HTML,
@@ -41,7 +44,7 @@ module Aladdin
         set :public_folder, Aladdin::PATHS.assets
       end
 
-      # Configures ZURB's compass to compile laddin's scss assets.
+      # Configures ZURB's compass to compile aladdin's scss assets.
       # @return [void]
       def configure_compass
         Compass.configuration do |config|
@@ -84,13 +87,16 @@ module Aladdin
     end
 
     get '/*' do |path|
-      render_or_pass { markdown path.to_sym }
+      path = path.empty? ? INDEX : path.to_sym
+      render_or_pass do
+        markdown path, locals: Aladdin.config
+      end
     end
 
     post '/verify/:type/:id' do
       input = request.body.read
       content_type :json
-      Submission.new(params[:id], params[:type], input).verify
+      Submission.new(params[:id], params[:type], params, input).verify
     end
 
   end

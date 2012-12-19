@@ -10,20 +10,20 @@ module Aladdin
   # unsuitable for production use. This class does not impose any security
   # restrictions at all.
   class Submission
+    include Aladdin::Mixin::Logger
 
     SCRATCHSPACE = '.__ss'
 
     # Creates a new student submission.
     # @param [String] id      exercise ID
     # @param [Type]   type    quiz or code
+    # @param [Hash]   params  form values
     # @param [String] input   student input
-    def initialize(id, type, input)
-      @id, @type, @input = id, type, input
+    def initialize(id, type, params, input)
+      @id, @type, @params, @input = id, type, params, input
     end
 
-    # Executes the verification script and returns the JSON-encoded results.
-    # @example
-    #     ./verify --id=0 --input=path/to/student/input
+    # Verifies the student's submission.
     def verify
       case @type
       when Type::CODE then verify_code
@@ -33,15 +33,21 @@ module Aladdin
 
     private
 
+    # Verifies quiz answers by comparing the submitted answer against the
+    # answer in the solution file.
+    # @return [String] (json-encoded) true iff the submitted answer is correct.
     def verify_quiz
-      # FIXME: rewrite?
-      # FIXME: directory attacks
-      solution = File.join Aladdin::DATA_DIR, "#{@id}.sol"
-      (@input.chomp == IO.read(solution).chomp).to_json
-    rescue
-      return false.to_json
+      id = @id.gsub File::SEPARATOR, '' # protect against directory attacks
+      solution = File.expand_path id + Aladdin::DATA_EXT, Aladdin::DATA_DIR
+      File.open(solution, 'rb') { |f| @params['answer'] == Marshal.restore(f) }.to_json
+    rescue => e
+      logger.warn e.message
+      false.to_json
     end
 
+    # Executes the verification script and returns the JSON-encoded results.
+    # @example
+    #     ./verify --id=0 --input=path/to/student/input
     def verify_code
       scratchspace do
         # FIXME: catch errors
