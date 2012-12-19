@@ -24,7 +24,8 @@ Gem::Specification.new do |gem|
                         Dir.glob('lib/**/*.rb') +
                         Dir.glob('assets/**/*') +
                         Dir.glob('views/**/*') +
-                        Dir.glob('bin/**/*')
+                        Dir.glob('bin/**/*') +
+                        Dir.glob('skeleton/**/*')
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
 
