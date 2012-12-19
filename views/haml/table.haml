@@ -3,14 +3,23 @@
 
     %input.q-id{type: 'hidden', value: id}
 
-    %table
-      -question.each_with_index do |row, i|
-        %tr
-          -row.each_with_index do |cell, j|
-            %td
-              - if Aladdin::Render::Table.input? cell
-                %input{name: "answer[#{i}][#{j}]"}
-              - else
-                = cell
+    .row.collapse
+      .ten.columns.mobile-three
+        %table
+          %thead
+            -if headings
+              %tr
+                -headings.each do |heading|
+                  %th= heading
 
-    %a.button.submit{href: '#'} Submit
+          %tbody
+            -question.each_with_index do |row, i|
+              %tr
+                -row.each_with_index do |cell, j|
+                  %td
+                    - if Aladdin::Render::Table.input? cell
+                      %input{name: "answer[#{i}][#{j}]"}
+                    - else
+                      = cell
+      .two.columns.mobile-one
+        %a.button.small.submit.expand.postfix.radius{href: '#'} Submit

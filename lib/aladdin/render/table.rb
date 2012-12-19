@@ -24,8 +24,17 @@ module Aladdin
       # Name of template file for rendering table questions.
       TEMPLATE = 'table.haml'
 
+      # Optional headings key.
+      HEADINGS = 'headings'
+
       # Special token indicating that the cell should be filled in.
       FILL_ME_IN = '?'
+
+      # Ensures that the +headings+ key exists.
+      def initialize(json)
+        json[HEADINGS] ||= nil
+        super
+      end
 
       # Checks if the given json contains a valid MCQ.
       # @return [Boolean] true iff the json contains a valid MCQ.

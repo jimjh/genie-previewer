@@ -2,10 +2,14 @@
   %fieldset
 
     %legend= question
-
-    %select{name: 'answer'}
-      -options.each do |value, label|
-        %option{value: value}= label
-
     %input.q-id{type: 'hidden', value: id}
-    %a.button.submit{href: '#'} Submit
+
+    .row.collapse
+      .ten.mobile-three.columns
+        -options.each do |value, label|
+          %label{for: 'answer'}
+            %input{name: 'answer', type: 'radio', value: value}
+              = label
+      .two.mobile-one.columns
+        %a.button.submit.small.expand.postfix.radius{href: '#'} Submit
+
