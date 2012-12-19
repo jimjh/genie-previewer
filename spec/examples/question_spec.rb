@@ -3,9 +3,9 @@ require 'spec_helper'
 
 describe 'Question' do
 
-  context 'given JSON markup' do
+  include_context 'parser'
 
-    def parse(text); Aladdin::Render::Question.parse text; end
+  context 'given JSON markup' do
 
     it 'should raise a ParseError on invalid JSON' do
       text = '{xxx}'
@@ -25,6 +25,26 @@ describe 'Question' do
       expect { parse text }.to_not raise_error
       text = '{"format": "w"}'
       expect { parse text }.to raise_error(Aladdin::Render::ParseError)
+    end
+
+    it 'should raise a ParseError on missing formats' do
+      text = '{"question": "x", "answer": "y"}'
+      expect { parse text }.to raise_error(Aladdin::Render::ParseError)
+    end
+
+    it 'should not accept missing questions' do
+      text = '{"format": "mcq", "answer": "y"}'
+      parse(text).should_not be_valid
+    end
+
+    it 'should not accept missing answers' do
+      text = '{"format": "mcq", "question": "x"}'
+      parse(text).should_not be_valid
+    end
+
+    it 'should accept complete questions' do
+      text = '{"format": "short", "question": "x", "answer": "y"}'
+      parse(text).should be_valid
     end
 
     it 'should return a question object' do

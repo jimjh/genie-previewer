@@ -38,7 +38,7 @@ module Aladdin
 
       # Checks if the given json contains a valid MCQ.
       # @return [Boolean] true iff the json contains a valid MCQ.
-      def is_valid?
+      def valid?
         super and has_valid_question? and has_valid_answer?
       end
 

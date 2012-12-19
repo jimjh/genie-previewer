@@ -5,7 +5,7 @@ module Aladdin
 
     # Renders a single question. This class doesn't do anything useful; use the
     # child classes (e.g. {Aladdin::Render::MCQ}) instead. Child classes should
-    # override {#is_valid?} and provide a +TEMPLATE+ string constant.
+    # override {#valid?} and provide a +TEMPLATE+ string constant.
     class Question
 
       # Required key in JSON markup. Value indicates type of question.
@@ -75,14 +75,14 @@ module Aladdin
       # @comment TODO: should probably show some error message in the preview,
       # so that the author doesn't have to read the logs.
       def render
-        raise RenderError.new('Invalid question.') unless is_valid?
+        raise RenderError.new('Invalid question.') unless valid?
         template.render Object.new, @json
       end
 
       private
 
       # @return [Boolean] true iff the parsed json contains a valid question.
-      def is_valid?
+      def valid?
         KEYS.all? { |key| @json.has_key? key }
       end
 

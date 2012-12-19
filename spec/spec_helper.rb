@@ -23,3 +23,5 @@ require 'aladdin'
 require 'rspec'
 require 'rack/test'
 ENV['RACK_ENV'] = 'test'
+
+require_relative 'shared/parse_context'
