@@ -48,3 +48,11 @@
 
 @import "pygment";
 @import "github";
+
+div.meta.panel {
+  border-top: 2px solid black;
+}
+
+a.hero img {
+  width: 100%;
+}

@@ -76,6 +76,12 @@ module Aladdin
         p(text)
       end
 
+      # Increases all header levels by one.
+      def header(text, level)
+        level += 1
+        "<h#{level}>#{text}</h#{level}>"
+      end
+
       # Sanitizes the final document.
       # @param [String] document    html document
       # @return [String] sanitized document

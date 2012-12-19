@@ -88,7 +88,9 @@ module Aladdin
 
     get '/*' do |path|
       path = path.empty? ? INDEX : path.to_sym
-      render_or_pass { markdown path }
+      render_or_pass do
+        markdown path, locals: Aladdin.config
+      end
     end
 
     post '/verify/:type/:id' do
