@@ -7,6 +7,7 @@ describe 'Launching aladdin' do
   context 'in a simple directory of markdown documents' do
 
     before do
+      Aladdin.send :configure
       dir = File.expand_path('markdown', Test::DATA_DIR)
       Aladdin::App.set :views, Aladdin::VIEWS.merge(markdown: dir)
     end
@@ -26,7 +27,7 @@ describe 'Launching aladdin' do
 
     it 'should render HTML' do
       get '/a'
-      last_response.body.should match %{<h1>Hello World</h1>}
+      last_response.body.should match %{<h2>Hello World</h2>}
     end
 
     it 'should return a 404 for missing files' do

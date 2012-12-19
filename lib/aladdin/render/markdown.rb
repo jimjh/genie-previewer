@@ -82,7 +82,7 @@ module Aladdin
       # sections.
       def header(text, level)
         level += 1
-        html = "<h#{level}>#{text}</h#{level}>"
+        html = h(text, level)
         if level == 2
           index = @navigation << text
           html += "<a name='section_#{index}' data-magellan-destination='section_#{index}'/>"
@@ -106,6 +106,12 @@ module Aladdin
       # @return [String]
       def executable(opts)
         opts[:colored] + @exe.render(Object.new, id: opts[:id], raw: opts[:raw])
+      end
+
+      # Wraps the given text with header tags.
+      # @return [String] wrapped text
+      def h(text, level)
+        "<h#{level}>#{text}</h#{level}>"
       end
 
       # Wraps the given text with paragraph tags.

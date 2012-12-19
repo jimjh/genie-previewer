@@ -25,7 +25,10 @@ module Aladdin
     'verify' => {
       'bin' => 'make',
       'arg_prefix' => ''
-     }
+     },
+    'title' => 'Lesson X',
+    'description' => 'This is a placeholder description. You should provide your own',
+    'categories' => []
   }
 
   class << self
