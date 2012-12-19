@@ -9,17 +9,13 @@ require 'sanitize'
 require 'yaml'
 require 'json'
 
-require 'aladdin/submission'
 require 'aladdin/mixin/logger'
+require 'aladdin/submission'
 require 'aladdin/render/markdown'
 
 # Aladdin is a gem that tutorial authors can use to preview and test their
 # tutorials locally.
 module Aladdin
-
-  class << self
-    attr_reader :config
-  end
 
   # Name of configuration file.
   CONFIG_FILE = '.genie.yml'
@@ -29,32 +25,42 @@ module Aladdin
     'verify' => {
       'bin' => 'make',
       'arg_prefix' => ''
-     }
+     },
+    'title' => 'Lesson X',
+    'description' => 'This is a placeholder description. You should provide your own',
+    'categories' => []
   }
 
-  # Launches the tutorial app using 'thin' as the default webserver.
-  # @option opts [String] from        path to author's markdown documents;
-  #                                   defaults to the current working directory
-  def self.launch(opts = {})
-    configure
-    Aladdin::App.set :views, Aladdin::VIEWS.merge(markdown: opts[:from] || '.')
-    Aladdin::App.run!
-  end
+  class << self
 
-  # Reads configuration options from +.genie.yml+.
-  def self.configure
-    config = File.exists?(CONFIG_FILE) ? YAML.load_file(CONFIG_FILE) : {}
-    @config = DEFAULT_CONFIG.merge(config) { |k, l, r|
-      (l.is_a?(Hash) and r.is_a?(Hash)) ? l.merge(r) : r
-    }
-  end
-  private_class_method :configure
+    attr_reader :config
 
-  # Converts a hash to struct.
-  def self.to_struct(hash)
-    Struct.new( *(k = hash.keys) ).new( *hash.values_at( *k ) )
+    # Launches the tutorial app using 'thin' as the default webserver.
+    # @option opts [String] from        path to author's markdown documents;
+    #                                   defaults to the current working directory
+    def launch(opts = {})
+      configure
+      Aladdin::App.set :views, Aladdin::VIEWS.merge(markdown: opts[:from] || '.')
+      Aladdin::App.run!
+    end
+
+    private
+
+    # Reads configuration options from +.genie.yml+ and merges it into
+    # {DEFAULT_CONFIG}.
+    def configure
+      config = File.exists?(CONFIG_FILE) ? YAML.load_file(CONFIG_FILE) : {}
+      @config = DEFAULT_CONFIG.merge(config) { |k, l, r|
+        (l.is_a?(Hash) and r.is_a?(Hash)) ? l.merge(r) : r
+      }
+    end
+
+    # Converts a hash to struct.
+    def to_struct(hash)
+      Struct.new( *(k = hash.keys) ).new( *hash.values_at( *k ) )
+    end
+
   end
-  private_class_method :to_struct
 
   # Paths to different types of views.
   VIEWS = {
@@ -68,7 +74,10 @@ module Aladdin
     assets: File.expand_path('../../assets', __FILE__),
   ).freeze
 
-  # FIXME: allow configuration?
+  # File extension for solution files.
+  DATA_EXT = '.sol'
+
+  # @comment FIXME: allow configuration?
   DATA_DIR = Dir.tmpdir
 
 end

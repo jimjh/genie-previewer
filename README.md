@@ -3,7 +3,7 @@
 [![Dependency Status](https://gemnasium.com/jimjh/aladdin.png)](https://gemnasium.com/jimjh/aladdin)
 [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/jimjh/aladdin)
 
-Generates tutorials using the set of markdown documents provided by the author.
+Generates lessons using the markdown document and tests provided by the author.
 
 ## Installation
 Add this line to your application's Gemfile:
@@ -21,14 +21,15 @@ Or install it yourself as:
     $> gem install aladdin
 
 ## Usage
-Create a new directory for your notes _e.g._ `my_tutorial`. Change into that
+Create a new directory for your notes _e.g._ `lesson_0`. Change into that
 directory, and create your notes using GitHub-Flavored Markdown. It might look
 like:
 
-    my_tutorial/
-      01-introduction.md
-      02-the-beginning.md
-      03-the-end.md
+    lesson_0/
+      images/
+        graphic.png
+      index.md
+      .genie.yml
 
 Finally, execute aladdin to launch the Sinatra server:
 
@@ -36,7 +37,6 @@ Finally, execute aladdin to launch the Sinatra server:
 
 Note that the following directory names are reserved:
 
-- images
 - javascripts
 - stylesheets
 - verify

@@ -4,6 +4,7 @@ require 'aladdin/render/question'
 require 'aladdin/render/mcq'
 require 'aladdin/render/short'
 require 'aladdin/render/table'
+require 'aladdin/render/navigation'
 
 # ~*~ encoding: utf-8 ~*~
 module Aladdin
@@ -32,9 +33,6 @@ module Aladdin
       # valid JSON, it will be rendered as a simple text paragraph.
       QUESTION_REGEX = %r[^\s*{[^}]+}\s*$]
 
-      # File extension for solution files.
-      EXT = '.sol'
-
       # Renderer configuration options.
       CONFIGURATION = {
         hard_wrap:          true,
@@ -47,6 +45,7 @@ module Aladdin
         super options.merge(CONFIGURATION)
         exe_template = File.join(Aladdin::VIEWS[:haml], 'exe.haml')
         @exe = Haml::Engine.new(File.read exe_template)
+        @navigation = Navigation.new
       end
 
       # Pygmentizes code blocks.
@@ -69,18 +68,31 @@ module Aladdin
       def paragraph(text)
         return p(text) unless text.match QUESTION_REGEX
         question = Question.parse(HTML.entities.decode text)
-        IO.write File.join(Aladdin::DATA_DIR, question.id + EXT), question.answer
+        solution = File.join(Aladdin::DATA_DIR, question.id + Aladdin::DATA_EXT)
+        File.open(solution, 'wb+') { |f| Marshal.dump(question.answer, f) }
         question.render
       rescue Error => e # fall back to paragraph
         logger.warn e.message
         p(text)
       end
 
+      # Increases all header levels by one and keeps track of document
+      # sections.
+      def header(text, level)
+        level += 1
+        html = h(text, level)
+        if level == 2
+          index = @navigation << text
+          html += "<a name='section_#{index}' data-magellan-destination='section_#{index}'/>"
+        end
+        html
+      end
+
       # Sanitizes the final document.
       # @param [String] document    html document
       # @return [String] sanitized document
       def postprocess(document)
-        HTML.sanitize.clean document
+        HTML.sanitize.clean(@navigation.render + document)
       end
 
       private
@@ -92,6 +104,12 @@ module Aladdin
       # @return [String]
       def executable(opts)
         opts[:colored] + @exe.render(Object.new, id: opts[:id], raw: opts[:raw])
+      end
+
+      # Wraps the given text with header tags.
+      # @return [String] wrapped text
+      def h(text, level)
+        "<h#{level}>#{text}</h#{level}>"
       end
 
       # Wraps the given text with paragraph tags.

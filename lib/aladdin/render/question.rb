@@ -68,7 +68,7 @@ module Aladdin
       # Creates a new question from the given JSON.
       def initialize(json)
         @json = json
-        @json[ID] = SecureRandom.uuid if @json[ID].nil?
+        @json[ID] ||= SecureRandom.uuid
       end
 
       # Renders the given question using {#template}.

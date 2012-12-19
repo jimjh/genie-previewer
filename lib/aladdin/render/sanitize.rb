@@ -23,7 +23,9 @@ module Aladdin
 
     # white-listed attributes
     ATTRIBUTES = {
-      'a'   => ['href'],
+      'a'   => ['href', 'name', 'data-magellan-destination'],
+      'dd'  => ['data-magellan-arrival'],
+      'dl'  => ['data-magellan-expedition'],
       'img' => ['src'],
       :all  => ['abbr', 'accept', 'accept-charset',
                 'accesskey', 'action', 'align', 'alt', 'axis',
