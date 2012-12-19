@@ -1,5 +1,8 @@
-%form
+%form.question{id: "question_#{id}"}
   %fieldset
 
     %legend= question
-    %input{type: 'text'}
+    %input{name: 'answer'}
+
+    %input.q-id{type: 'hidden', value: id}
+    %a.button.submit{href: '#'} Submit

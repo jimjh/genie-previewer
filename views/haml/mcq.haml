@@ -1,11 +1,11 @@
-%form
+%form.question{id: "question_#{id}"}
   %fieldset
 
     %legend= question
 
-    %select
+    %select{name: 'answer'}
       -options.each do |value, label|
         %option{value: value}= label
 
-    -# %input.q-id{type: 'hidden', value: id}
-    -# %a.button.submit{href: "#q_#{id}"} Submit
+    %input.q-id{type: 'hidden', value: id}
+    %a.button.submit{href: '#'} Submit

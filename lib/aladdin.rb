@@ -9,8 +9,8 @@ require 'sanitize'
 require 'yaml'
 require 'json'
 
-require 'aladdin/submission'
 require 'aladdin/mixin/logger'
+require 'aladdin/submission'
 require 'aladdin/render/markdown'
 
 # Aladdin is a gem that tutorial authors can use to preview and test their
@@ -74,7 +74,10 @@ module Aladdin
     assets: File.expand_path('../../assets', __FILE__),
   ).freeze
 
-  # FIXME: allow configuration?
+  # File extension for solution files.
+  DATA_EXT = '.sol'
+
+  # @comment FIXME: allow configuration?
   DATA_DIR = Dir.tmpdir
 
 end

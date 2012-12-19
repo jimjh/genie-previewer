@@ -33,9 +33,6 @@ module Aladdin
       # valid JSON, it will be rendered as a simple text paragraph.
       QUESTION_REGEX = %r[^\s*{[^}]+}\s*$]
 
-      # File extension for solution files.
-      EXT = '.sol'
-
       # Renderer configuration options.
       CONFIGURATION = {
         hard_wrap:          true,
@@ -71,7 +68,8 @@ module Aladdin
       def paragraph(text)
         return p(text) unless text.match QUESTION_REGEX
         question = Question.parse(HTML.entities.decode text)
-        IO.write File.join(Aladdin::DATA_DIR, question.id + EXT), question.answer
+        solution = File.join(Aladdin::DATA_DIR, question.id + Aladdin::DATA_EXT)
+        File.open(solution, 'wb+') { |f| Marshal.dump(question.answer, f) }
         question.render
       rescue Error => e # fall back to paragraph
         logger.warn e.message

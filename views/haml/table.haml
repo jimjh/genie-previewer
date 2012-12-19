@@ -1,12 +1,16 @@
-%form
+%form.question{id: "question_#{id}"}
   %fieldset
 
+    %input.q-id{type: 'hidden', value: id}
+
     %table
-      -question.each do |row|
+      -question.each_with_index do |row, i|
         %tr
-          -row.each do |cell|
+          -row.each_with_index do |cell, j|
             %td
-              - if cell == '?'
-                %input
+              - if Aladdin::Render::Table.input? cell
+                %input{name: "answer[#{i}][#{j}]"}
               - else
                 = cell
+
+    %a.button.submit{href: '#'} Submit

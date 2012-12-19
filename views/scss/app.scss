@@ -49,8 +49,14 @@
 @import "pygment";
 @import "github";
 
+$borderWidth: 2px;
+
+body {
+  padding: 0 $columnGutter/2;
+}
+
 div.meta.panel {
-  border-top: 2px solid $darkEdge;
+  border-top: $borderWidth solid $darkEdge;
 }
 
 a.hero img {
@@ -58,9 +64,16 @@ a.hero img {
 }
 
 #sections {
-  background: darken($white, 2%);
+  background: darken($white, 5%);
   padding-top: 10px;
-  width: $rowWidth + 20;
-  border-bottom: 2px solid $darkEdge;
+  width: $rowWidth + 18;
+  border-bottom: $borderWidth solid $darkEdge;
   z-index: 1;
+}
+
+#footer .meter {
+  color: $white;
+  font-weight: 800;
+  text-align: right;
+  padding: 2px 2px 0 0;
 }

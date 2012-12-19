@@ -96,7 +96,7 @@ module Aladdin
     post '/verify/:type/:id' do
       input = request.body.read
       content_type :json
-      Submission.new(params[:id], params[:type], input).verify
+      Submission.new(params[:id], params[:type], params, input).verify
     end
 
   end
