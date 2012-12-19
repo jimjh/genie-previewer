@@ -33,14 +33,15 @@ module Aladdin
 
   class << self
 
-    attr_reader :config
+    attr_reader :config, :root
 
     # Launches the tutorial app using 'thin' as the default webserver.
     # @option opts [String] from        path to author's markdown documents;
     #                                   defaults to the current working directory
     def launch(opts = {})
+      @root = opts[:from] || '.'
       configure
-      Aladdin::App.set :views, Aladdin::VIEWS.merge(markdown: opts[:from] || '.')
+      Aladdin::App.set :views, Aladdin::VIEWS.merge(markdown: root)
       Aladdin::App.run!
     end
 
@@ -49,7 +50,8 @@ module Aladdin
     # Reads configuration options from +.genie.yml+ and merges it into
     # {DEFAULT_CONFIG}.
     def configure
-      config = File.exists?(CONFIG_FILE) ? YAML.load_file(CONFIG_FILE) : {}
+      config_file = File.expand_path CONFIG_FILE, root
+      config = File.exists?(config_file) ? YAML.load_file(config_file) : {}
       @config = DEFAULT_CONFIG.merge(config) { |k, l, r|
         (l.is_a?(Hash) and r.is_a?(Hash)) ? l.merge(r) : r
       }

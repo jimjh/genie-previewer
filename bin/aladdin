@@ -1,20 +1,4 @@
 #!/usr/bin/env ruby
 
-$:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
-
-require 'aladdin'
-require 'optparse'
-
-opt_parser = OptionParser.new do |opts|
-
-  opts.banner = 'Usage: aladdin /path/to/tutorial/directory'
-
-  opts.on_tail('--version', 'Display current gem version.') do
-    puts 'aladdin v' + Aladdin::VERSION
-    exit 0
-  end
-
-end
-opt_parser.parse!
-
-Aladdin.launch from: ARGV[0]
+$:.unshift File.join File.dirname(__FILE__), *%w(.. lib)
+require 'aladdin/cli'

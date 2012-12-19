@@ -57,7 +57,7 @@ module Aladdin
       # Registers redcarpet2 and configures aladdin's markdown renderer.
       # @return [void]
       def configure_markdown
-        Tilt.register Tilt::RedcarpetTemplate::Redcarpet2, 'markdown', 'mkd', 'md'
+        Tilt.register Tilt::RedcarpetTemplate::Redcarpet2, *%w(markdown mkd md)
         set :markdown, MARKDOWN_OPTIONS
       end
 
