@@ -14,15 +14,26 @@
 
   // TODO: rewrite
 
+  var show_result = function(button, form) {
+    return function(result) {
+      if (result) {
+        button.addClass('success');
+        form.removeClass('error');
+      } else {
+        button.removeClass('success');
+        form.addClass('error');
+      }
+    };
+  };
+
   // Adds click listeners to the submit buttons.
   var submit = function() {
 
     $('a.button.submit').click(function(e) {
-      var form = $(e.target).parents('form');
+      var button = $(e.target);
+      var form = button.parents('form');
       var id = form.find('input.q-id').val();
-      $.post('/verify/quiz/' + id, form.serialize(),
-        function(data) { console.log(data); }
-      );
+      $.post('/verify/quiz/' + id, form.serialize(), show_result(button, form));
       return false;
     });
 

@@ -18,7 +18,7 @@
                 -row.each_with_index do |cell, j|
                   %td
                     - if Aladdin::Render::Table.input? cell
-                      %input{name: "answer[#{i}][#{j}]"}
+                      %input{name: "answer[#{i}][#{j}]", type: 'text'}
                     - else
                       = cell
       .two.columns.mobile-one
