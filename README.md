@@ -22,18 +22,17 @@ Or install it yourself as:
 
 ## Usage
 Create a new directory for your notes _e.g._ `lesson_0`. Change into that
-directory, and create your notes using GitHub-Flavored Markdown. It might look
-like:
+directory, then execute:
 
-    lesson_0/
-      images/
-        graphic.png
-      index.md
-      .genie.yml
+```sh
+$> aladdin new
+```
 
-Finally, execute aladdin to launch the Sinatra server:
+Update `index.md` and provide your unit tests in the lesson directory. Finally, execute aladdin to launch the Sinatra server:
 
-    $> aladdin
+```sh
+$> aladdin server
+```
 
 Note that the following directory names are reserved:
 
