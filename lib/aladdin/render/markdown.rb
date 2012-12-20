@@ -17,7 +17,7 @@ module Aladdin
     # It creates pygmentized code blocks, supports hard-wraps, and only
     # generates links for protocols which are considered safe. Adds support for
     # embedded JSON, which are used to markup quizzes and tables. Refer to
-    # {MARKDOWN_OPTIONS} for more details.
+    # {CONFIGURATION} for more details.
     #
     # @see http://github.github.com/github-flavored-markdown/
     class HTML < ::Redcarpet::Render::HTML
