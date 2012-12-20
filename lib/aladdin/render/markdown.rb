@@ -1,7 +1,7 @@
 require 'aladdin/render/sanitize'
 require 'aladdin/render/error'
-require 'aladdin/render/question'
-require 'aladdin/render/mcq'
+require 'aladdin/render/problem'
+require 'aladdin/render/multi'
 require 'aladdin/render/short'
 require 'aladdin/render/table'
 require 'aladdin/render/navigation'
@@ -67,7 +67,7 @@ module Aladdin
       # @param [String] text      paragraph text
       def paragraph(text)
         return p(text) unless text.match QUESTION_REGEX
-        question = Question.parse(HTML.entities.decode text)
+        question = Problem.parse(HTML.entities.decode text)
         solution = File.join(Aladdin::DATA_DIR, question.id + Aladdin::DATA_EXT)
         File.open(solution, 'wb+') { |f| Marshal.dump(question.answer, f) }
         question.render

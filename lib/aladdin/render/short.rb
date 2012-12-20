@@ -10,7 +10,7 @@ module Aladdin
     #       "question": "What is the most commonly used word in English?",
     #       "answer": "the"
     #     }
-    class Short < Question
+    class Short < Problem
 
       # Name of template file for rendering short answer questions.
       TEMPLATE = 'short.haml'

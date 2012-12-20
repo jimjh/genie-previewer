@@ -3,7 +3,7 @@ module Aladdin
 
   module Render
 
-    # Renders table questions marked up in JSON as HTML.
+    # Renders table problems marked up in JSON as HTML.
     #
     # The question should be given as a 2-dimensional array that represents the
     # table to be filled in. +"?"+ is a special token used in the question to
@@ -19,9 +19,9 @@ module Aladdin
     #       "question": [[0, "?", 2], [3, "?", 5]],
     #       "answer": [["-", 1, "-"],  ["-", 4, "-"]
     #     }
-    class Table < Question
+    class Table < Problem
 
-      # Name of template file for rendering table questions.
+      # Name of template file for rendering table problems.
       TEMPLATE = 'table.haml'
 
       # Optional headings key.

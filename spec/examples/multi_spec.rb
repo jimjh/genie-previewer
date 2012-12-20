@@ -4,7 +4,7 @@ require 'spec_helper'
 # I am not sure if testing markup is a good idea. Nonetheless, I need a way to
 # make sure that the rendering works. So I am just going to test for the
 # minimum here.
-describe 'Mcq' do
+describe 'Multi' do
 
   include_context 'parser'
 
@@ -13,7 +13,7 @@ describe 'Mcq' do
     it 'should render an MCQ form' do
       text = <<-eos
         {
-          "format": "mcq",
+          "format": "multi",
           "question": "How tall is Mt. Everest?",
           "answer": "A",
           "options": {
@@ -23,7 +23,7 @@ describe 'Mcq' do
         }
       eos
       q = parse(text)
-      q.should be_kind_of(Aladdin::Render::Mcq)
+      q.should be_kind_of(Aladdin::Render::Multi)
       q.should be_valid
       html = q.render
       html.should match %r{<form}
@@ -39,7 +39,7 @@ describe 'Mcq' do
     it 'should raise a RenderError if options is missing' do
       text = <<-eos
         {
-          "format": "mcq",
+          "format": "multi",
           "question": "How tall is Mt. Everest?",
           "answer": "A"
         }
@@ -52,7 +52,7 @@ describe 'Mcq' do
     it 'should raise a RenderError if options is not a hash' do
       text = <<-eos
         {
-          "format": "mcq",
+          "format": "multi",
           "question": "How tall is Mt. Everest?",
           "answer": "A",
           "options": ["A"]
@@ -66,7 +66,7 @@ describe 'Mcq' do
     it 'should raise a RenderError if question is not a string' do
       text = <<-eos
         {
-          "format": "mcq",
+          "format": "multi",
           "question": [],
           "answer": "A",
           "options": {"A": "B"}
@@ -80,7 +80,7 @@ describe 'Mcq' do
     it 'should raise a RenderError if answer is not a string' do
       text = <<-eos
         {
-          "format": "mcq",
+          "format": "multi",
           "question": "How tall is Mt. Everest?",
           "answer": {},
           "options": {"A": "B"}

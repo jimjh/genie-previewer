@@ -7,7 +7,7 @@ module Aladdin
     # @example
     #
     #     {
-    #       "format": "mcq",
+    #       "format": "multi",
     #       "question": "How tall is Mount Everest?",
     #       "answer": "A",
     #       "options": {
@@ -15,14 +15,14 @@ module Aladdin
     #         "B": "8.85 kilometers"
     #       }
     #     }
-    class Mcq < Question
+    class Multi < Problem
 
       # Required key in JSON markup. Associated value should be a dictionary of
       # label -> choices.
       OPTIONS = 'options'
 
       # Name of template file for rendering multiple choice questions.
-      TEMPLATE = 'mcq.haml'
+      TEMPLATE = 'multi.haml'
 
       # Checks if the given json contains a valid MCQ.
       # @return [Boolean] true iff the json contains a valid MCQ.

@@ -1,7 +1,7 @@
 # ~*~ encoding: utf-8 ~*~
 require 'spec_helper'
 
-describe 'Question' do
+describe 'Problem' do
 
   include_context 'parser'
 
@@ -17,11 +17,11 @@ describe 'Question' do
     end
 
     it 'should raise a ParseError on invalid format' do
-      text = '{"format": "mcq"}'
-      expect { parse text}.to_not raise_error
-      text = '{"format": "MCQ"}'
+      text = '{"format": "short"}'
       expect { parse text }.to_not raise_error
-      text = '{"format": "Mcq"}'
+      text = '{"format": "Short"}'
+      expect { parse text }.to_not raise_error
+      text = '{"format": "SHORT"}'
       expect { parse text }.to_not raise_error
       text = '{"format": "w"}'
       expect { parse text }.to raise_error(Aladdin::Render::ParseError)
@@ -33,12 +33,12 @@ describe 'Question' do
     end
 
     it 'should not accept missing questions' do
-      text = '{"format": "mcq", "answer": "y"}'
+      text = '{"format": "multi", "answer": "y"}'
       parse(text).should_not be_valid
     end
 
     it 'should not accept missing answers' do
-      text = '{"format": "mcq", "question": "x"}'
+      text = '{"format": "multi", "question": "x"}'
       parse(text).should_not be_valid
     end
 
@@ -47,9 +47,9 @@ describe 'Question' do
       parse(text).should be_valid
     end
 
-    it 'should return a question object' do
+    it 'should return a problem object' do
       text = '{"format": "short"}'
-      parse(text).should be_kind_of(Aladdin::Render::Question)
+      parse(text).should be_kind_of(Aladdin::Render::Problem)
     end
 
     it 'should generate an ID if one is not given' do

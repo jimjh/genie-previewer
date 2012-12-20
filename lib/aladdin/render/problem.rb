@@ -3,12 +3,12 @@ module Aladdin
 
   module Render
 
-    # Renders a single question. This class doesn't do anything useful; use the
-    # child classes (e.g. {Aladdin::Render::MCQ}) instead. Child classes should
+    # Renders a single problem. This class doesn't do anything useful; use the
+    # child classes (e.g. {Aladdin::Render::Multi}) instead. Child classes should
     # override {#valid?} and provide a +TEMPLATE+ string constant.
-    class Question
+    class Problem
 
-      # Required key in JSON markup. Value indicates type of question.
+      # Required key in JSON markup. Value indicates type of problem.
       FORMAT = 'format'
 
       # Required key in JSON markup. Value contains question body.
@@ -17,15 +17,11 @@ module Aladdin
       # Required key in JSON markup. Value contains answers.
       ANSWER = 'answer'
 
-      # Optional key in JSON markup. Value contains question ID.
+      # Optional key in JSON markup. Value contains problem ID.
       ID = 'id'
 
       # Required keys.
       KEYS = [FORMAT, QUESTION, ANSWER]
-
-      # Valid formats.
-      # @comment FIXME should I generate this at runtime?
-      FORMATS = ['Mcq', 'Short', 'Table']
 
       class << self
 
@@ -50,38 +46,36 @@ module Aladdin
           args.each { |arg| define_method(arg) { @json[arg] } }
         end
 
-        private
-
-        # @return [Question] question
+        # @return [Problem] problem
         def get_instance(json)
-          format = json[FORMAT].capitalize
-          if FORMATS.include?(format)
-            Aladdin::Render.const_get(format).new json
-          else raise ParseError.new('Unrecognized format: %p' % format)
-          end
+          klass = Aladdin::Render.const_get(json[FORMAT].capitalize)
+          raise NameError.new unless klass < Problem
+          klass.new(json)
+        rescue NameError
+          raise ParseError.new('Unrecognized format: %p' % json[FORMAT])
         end
 
       end
 
       accessor ID, *KEYS
 
-      # Creates a new question from the given JSON.
+      # Creates a new problem from the given JSON.
       def initialize(json)
         @json = json
         @json[ID] ||= SecureRandom.uuid
       end
 
-      # Renders the given question using {#template}.
+      # Renders the given problem using {#template}.
       # @comment TODO: should probably show some error message in the preview,
       # so that the author doesn't have to read the logs.
       def render
-        raise RenderError.new('Invalid question.') unless valid?
+        raise RenderError.new('Invalid problem.') unless valid?
         template.render Object.new, @json
       end
 
       private
 
-      # @return [Boolean] true iff the parsed json contains a valid question.
+      # @return [Boolean] true iff the parsed json contains a valid problem.
       def valid?
         KEYS.all? { |key| @json.has_key? key }
       end
