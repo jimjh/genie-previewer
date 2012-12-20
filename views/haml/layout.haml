@@ -45,7 +45,8 @@
     %section{role: 'main'}
       .row
         .twelve.columns
-          =yield
+          !=yield
+          -# output is sanitized by the sanitize gem
 
     %hr/
 
