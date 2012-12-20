@@ -45,8 +45,7 @@
     %section{role: 'main'}
       .row
         .twelve.columns
-          !=yield
-          -# output is sanitized by the sanitize gem
+          !=yield # output is sanitized by the sanitize gem
 
     %hr/
 
@@ -57,6 +56,7 @@
       .two.columns
         %span <!-- TODO: score goes here -->
 
+  -# foundation
   %script{src: 'javascripts/foundation/jquery.js'}
   %script{src: 'javascripts/foundation/jquery.cookie.js'}
   %script{src: 'javascripts/foundation/jquery.event.move.js'}
@@ -66,17 +66,17 @@
   %script{src: 'javascripts/foundation/jquery.foundation.buttons.js'}
   %script{src: 'javascripts/foundation/jquery.foundation.clearing.js'}
   %script{src: 'javascripts/foundation/jquery.foundation.forms.js'}
-  %script{src: 'javascripts/foundation/jquery.foundation.joyride.js'}
   %script{src: 'javascripts/foundation/jquery.foundation.magellan.js'}
   %script{src: 'javascripts/foundation/jquery.foundation.mediaQueryToggle.js'}
   %script{src: 'javascripts/foundation/jquery.foundation.navigation.js'}
-  %script{src: 'javascripts/foundation/jquery.foundation.orbit.js'}
-  %script{src: 'javascripts/foundation/jquery.foundation.reveal.js'}
   %script{src: 'javascripts/foundation/jquery.foundation.tabs.js'}
   %script{src: 'javascripts/foundation/jquery.foundation.tooltips.js'}
   %script{src: 'javascripts/foundation/jquery.foundation.topbar.js'}
   %script{src: 'javascripts/foundation/jquery.placeholder.js'}
   %script{src: 'javascripts/foundation/app.js'}
+
+  -# mathjax
+  %script{src: 'https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'}
   %script{src: 'javascripts/app.js'}
 
 :plain
