@@ -25,7 +25,7 @@ describe 'Multi' do
       q = parse(text)
       q.should be_kind_of(Aladdin::Render::Multi)
       q.should be_valid
-      html = q.render
+      html = q.render(index: 0)
       html.should match %r{<form}
       html.should match %r{How tall is Mt\. Everest\?}
       html.should match %r{452 inches}
@@ -46,7 +46,7 @@ describe 'Multi' do
       eos
       q = parse(text)
       q.should_not be_valid
-      expect { q.render }.to raise_error(Aladdin::Render::RenderError)
+      expect { q.render(index: 0) }.to raise_error(Aladdin::Render::RenderError)
     end
 
     it 'should raise a RenderError if options is not a hash' do
@@ -60,7 +60,7 @@ describe 'Multi' do
       eos
       q = parse(text)
       q.should_not be_valid
-      expect { q.render }.to raise_error(Aladdin::Render::RenderError)
+      expect { q.render(index: 0) }.to raise_error(Aladdin::Render::RenderError)
     end
 
     it 'should raise a RenderError if question is not a string' do
@@ -74,7 +74,7 @@ describe 'Multi' do
       eos
       q = parse(text)
       q.should_not be_valid
-      expect { q.render }.to raise_error(Aladdin::Render::RenderError)
+      expect { q.render(index: 0) }.to raise_error(Aladdin::Render::RenderError)
     end
 
     it 'should raise a RenderError if answer is not a string' do
@@ -88,7 +88,7 @@ describe 'Multi' do
       eos
       q = parse(text)
       q.should_not be_valid
-      expect { q.render }.to raise_error(Aladdin::Render::RenderError)
+      expect { q.render(index: 0) }.to raise_error(Aladdin::Render::RenderError)
     end
   end
 

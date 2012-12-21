@@ -1,5 +1,7 @@
 require 'aladdin/render/sanitize'
 require 'aladdin/render/error'
+require 'aladdin/render/template'
+require 'aladdin/render/image'
 require 'aladdin/render/problem'
 require 'aladdin/render/multi'
 require 'aladdin/render/short'
@@ -31,7 +33,10 @@ module Aladdin
       # Paragraphs that start and end with braces are treated as JSON blocks
       # and are parsed for questions/answers. If the paragraph does not contain
       # valid JSON, it will be rendered as a simple text paragraph.
-      QUESTION_REGEX = %r[^\s*{[^}]+}\s*$]
+      PROBLEM_REGEX = %r<^\s*{[^}]+}\s*$>
+
+      # Paragraphs that only contain images are rendered differently.
+      IMAGE_REGEX = %r{^\s*<img[^<>]+>\s*$}
 
       # Renderer configuration options.
       CONFIGURATION = {
@@ -45,7 +50,7 @@ module Aladdin
         super options.merge(CONFIGURATION)
         exe_template = File.join(Aladdin::VIEWS[:haml], 'exe.haml')
         @exe, @nav = Haml::Engine.new(File.read exe_template), Navigation.new
-        @prob = 0
+        @prob, @img = 0, 0
       end
 
       # Pygmentizes code blocks.
@@ -62,13 +67,13 @@ module Aladdin
         end
       end
 
-      # Detects question blocks and renders options or text fields and renders
-      # them as forms.
+      # Detects problem blocks and image blocks.
       # @param [String] text      paragraph text
       def paragraph(text)
-        return p(text) unless text.match QUESTION_REGEX
-        problem = Problem.parse(HTML.entities.decode text)
-        problem.save! and problem.render(@prob += 1)
+        case text
+        when PROBLEM_REGEX then problem(text)
+        when IMAGE_REGEX then block_image(text)
+        else p(text) end
       rescue Error => e # fall back to paragraph
         logger.warn e.message
         p(text)
@@ -102,6 +107,22 @@ module Aladdin
       # @return [String]
       def executable(opts)
         opts[:colored] + @exe.render(Object.new, id: opts[:id], raw: opts[:raw])
+      end
+
+      # Prepares a problem form. Raises {RenderError} or {ParseError} if the
+      # given text does not contain valid json markup for a problem.
+      # @param [String] json            JSON markup
+      # @return [String] rendered HTML
+      def problem(json)
+        problem = Problem.parse(HTML.entities.decode json)
+        problem.save! and problem.render(index: @prob += 1)
+      end
+
+      # Prepares a block image. Raises {RenderError} or {ParseError} if the
+      # given text does not contain a valid image block.
+      def block_image(text)
+        image = Image.parse(text)
+        image.render(index: @img += 1)
       end
 
       # Wraps the given text with header tags.

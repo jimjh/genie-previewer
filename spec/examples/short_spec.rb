@@ -18,7 +18,7 @@ describe 'Short' do
       q = parse(text)
       q.should be_kind_of(Aladdin::Render::Short)
       q.should be_valid
-      html = q.render
+      html = q.render(index: 0)
       html.should match %r{<form}
       html.should match %r{How tall is Mt\. Everest\?}
     end
@@ -37,7 +37,7 @@ describe 'Short' do
       eos
       q = parse(text)
       q.should_not be_valid
-      expect { q.render }.to raise_error(Aladdin::Render::RenderError)
+      expect { q.render(index: 0) }.to raise_error(Aladdin::Render::RenderError)
     end
 
   end

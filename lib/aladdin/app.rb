@@ -87,6 +87,10 @@ module Aladdin
       render_or_pass { scss path.to_sym }
     end
 
+    get '/img/*' do |path|
+      send_file File.join('img', path)
+    end
+
     get '/*' do |path|
       path = path.empty? ? INDEX : path.to_sym
       render_or_pass do

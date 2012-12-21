@@ -5,8 +5,8 @@ module Aladdin
 
     # Renders a single problem. This class doesn't do anything useful; use the
     # child classes (e.g. {Aladdin::Render::Multi}) instead. Child classes should
-    # override {#valid?} and provide a +TEMPLATE+ string constant.
-    class Problem
+    # override {#valid?}.
+    class Problem < Template
 
       # Required key in JSON markup. Value indicates type of problem.
       FORMAT = 'format'
@@ -65,12 +65,11 @@ module Aladdin
         @json[ID] ||= SecureRandom.uuid
       end
 
-      # Renders the given problem using {#template}.
       # @comment TODO: should probably show some error message in the preview,
       # so that the author doesn't have to read the logs.
-      def render(index)
+      def render(locals={})
         raise RenderError.new('Invalid problem.') unless valid?
-        template.render Object.new, @json.merge(index: index)
+        super @json.merge(locals)
       end
 
       # Saves the answer to a file on disk.
@@ -87,13 +86,6 @@ module Aladdin
       # @return [Boolean] true iff the parsed json contains a valid problem.
       def valid?
         KEYS.all? { |key| @json.has_key? key } and question.is_a? String
-      end
-
-      # Retrieves the +template+ singleton.
-      def template
-        return @template unless @template.nil?
-        file = File.join Aladdin::VIEWS[:haml], self.class::TEMPLATE
-        @template = Haml::Engine.new(File.read file)
       end
 
     end
