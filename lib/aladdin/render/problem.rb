@@ -73,11 +73,20 @@ module Aladdin
         template.render Object.new, @json
       end
 
+      # Saves the answer to a file on disk.
+      # @comment TODO: should probably show some error message in the preview,
+      # so that the author doesn't have to read the logs.
+      def save!
+        raise RenderError.new('Invalid problem.') unless valid?
+        solution = File.join(Aladdin::DATA_DIR, id + Aladdin::DATA_EXT)
+        File.open(solution, 'wb+') { |file| Marshal.dump answer, file }
+      end
+
       private
 
       # @return [Boolean] true iff the parsed json contains a valid problem.
       def valid?
-        KEYS.all? { |key| @json.has_key? key }
+        KEYS.all? { |key| @json.has_key? key } and question.is_a? String
       end
 
       # Retrieves the +template+ singleton.

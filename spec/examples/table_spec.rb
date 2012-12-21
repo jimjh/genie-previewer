@@ -5,51 +5,57 @@ describe 'Table' do
 
   include_context 'parser'
 
-  context 'given valid question' do
+  let(:obj) do
+    { format: 'table',
+      question: 'fill me in',
+      grid: [%w(1 ? 3), %w(? 5 6)],
+      answer: [%w(0 2 0), %w(4 0 0)]
+    }
+  end
+
+  context 'given valid problem' do
 
     it 'should render a table' do
-      text = <<-eos
-        {
-          "format": "table",
-          "question": [["1", "?", "3"], ["?", "5", "6"]],
-          "answer": [[0, "2", 0], ["4", 0, 0]]
-        }
-      eos
-      q = parse(text)
-      q.should be_kind_of(Aladdin::Render::Table)
-      q.should be_valid
-      html = q.render
-      html.should match %r{<table}
+      p = parse(obj.to_json)
+      p.should be_kind_of(Aladdin::Render::Table)
+      p.should be_valid
+      p.render.should match %r{<table}
+    end
+
+    it 'should encode the answer' do
+      p = parse(obj.to_json)
+      p.should be_kind_of(Aladdin::Render::Table)
+      p.should be_valid
+      p.answer.should eq('0' => {'1' => '2'}, '1' => {'0' => '4'})
     end
 
   end
 
-  context 'given invalid question' do
+  context 'given invalid problem' do
 
-    it 'should raise a RenderError if the question is malformed' do
-      text = <<-eos
-        {
-          "format": "table",
-          "question": ["1", "?", "3", "?", "5", "6"],
-          "answer": [[0, "2", 0], ["4", 0, 0]]
-        }
-      eos
-      q = parse(text)
-      q.should_not be_valid
-      expect { q.render }.to raise_error(Aladdin::Render::RenderError)
+    it 'should raise a RenderError if the grid is missing' do
+      h = obj
+      h.delete(:grid)
+      p = parse(h.to_json)
+      p.should_not be_valid
+      expect { p.render }.to raise_error(Aladdin::Render::RenderError)
+      expect { p.save! }.to raise_error(Aladdin::Render::RenderError)
+    end
+
+    it 'should raise a RenderError if the grid is malformed' do
+      h = obj
+      h[:grid] = %w(1 2 3 4 5 6)
+      p = parse(h.to_json)
+      p.should_not be_valid
+      expect { p.render }.to raise_error(Aladdin::Render::RenderError)
     end
 
     it 'should raise a RenderError if the answer is malformed' do
-      text = <<-eos
-        {
-          "format": "table",
-          "question": [["1", "?", "3"], ["?", "5", "6"]],
-          "answer": [[0, "2", 0]]
-        }
-      eos
-      q = parse(text)
-      q.should_not be_valid
-      expect { q.render }.to raise_error(Aladdin::Render::RenderError)
+      h = obj
+      h[:answer] = [%w(1 2 3)]
+      p = parse(h.to_json)
+      p.should_not be_valid
+      expect { p.render }.to raise_error(Aladdin::Render::RenderError)
     end
 
   end

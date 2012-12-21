@@ -67,10 +67,8 @@ module Aladdin
       # @param [String] text      paragraph text
       def paragraph(text)
         return p(text) unless text.match QUESTION_REGEX
-        question = Problem.parse(HTML.entities.decode text)
-        solution = File.join(Aladdin::DATA_DIR, question.id + Aladdin::DATA_EXT)
-        File.open(solution, 'wb+') { |f| Marshal.dump(question.answer, f) }
-        question.render
+        problem = Problem.parse(HTML.entities.decode text)
+        problem.save! and problem.render
       rescue Error => e # fall back to paragraph
         logger.warn e.message
         p(text)

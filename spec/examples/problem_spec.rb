@@ -37,6 +37,11 @@ describe 'Problem' do
       parse(text).should_not be_valid
     end
 
+    it 'should not accept questions that are not strings' do
+      text = '{"format": "multi", "question": ["x"], "answer": "y"}'
+      parse(text).should_not be_valid
+    end
+
     it 'should not accept missing answers' do
       text = '{"format": "multi", "question": "x"}'
       parse(text).should_not be_valid
