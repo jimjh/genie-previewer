@@ -68,9 +68,9 @@ module Aladdin
       # Renders the given problem using {#template}.
       # @comment TODO: should probably show some error message in the preview,
       # so that the author doesn't have to read the logs.
-      def render
+      def render(index)
         raise RenderError.new('Invalid problem.') unless valid?
-        template.render Object.new, @json
+        template.render Object.new, @json.merge(index: index)
       end
 
       # Saves the answer to a file on disk.

@@ -44,8 +44,8 @@ module Aladdin
       def initialize(options = {})
         super options.merge(CONFIGURATION)
         exe_template = File.join(Aladdin::VIEWS[:haml], 'exe.haml')
-        @exe = Haml::Engine.new(File.read exe_template)
-        @navigation = Navigation.new
+        @exe, @nav = Haml::Engine.new(File.read exe_template), Navigation.new
+        @prob = 0
       end
 
       # Pygmentizes code blocks.
@@ -68,7 +68,7 @@ module Aladdin
       def paragraph(text)
         return p(text) unless text.match QUESTION_REGEX
         problem = Problem.parse(HTML.entities.decode text)
-        problem.save! and problem.render
+        problem.save! and problem.render(@prob += 1)
       rescue Error => e # fall back to paragraph
         logger.warn e.message
         p(text)
@@ -80,7 +80,7 @@ module Aladdin
         level += 1
         html = h(text, level)
         if level == 2
-          index = @navigation << text
+          index = @nav << text
           html += "<a name='section_#{index}' data-magellan-destination='section_#{index}'/>"
         end
         html
@@ -90,7 +90,7 @@ module Aladdin
       # @param [String] document    html document
       # @return [String] sanitized document
       def postprocess(document)
-        HTML.sanitize.clean(@navigation.render + document)
+        HTML.sanitize.clean(@nav.render + document)
       end
 
       private

@@ -1,8 +1,10 @@
 %form.question{id: "question_#{id}"}
   %fieldset
 
-    %legend= question
+    %legend Problem #{index}
     %input.q-id{type: 'hidden', value: id}
+
+    %p= question
 
     .row.collapse
       .ten.mobile-three.columns
