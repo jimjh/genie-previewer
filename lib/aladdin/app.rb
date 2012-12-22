@@ -94,7 +94,7 @@ module Aladdin
     get '/*' do |path|
       path = path.empty? ? INDEX : path.to_sym
       render_or_pass do
-        markdown path, locals: Aladdin.config
+        markdown(path, locals: Aladdin.config)
       end
     end
 

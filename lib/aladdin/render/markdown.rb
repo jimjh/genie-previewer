@@ -57,7 +57,7 @@ module Aladdin
       # @param [String] marker      name of language, for syntax highlighting
       # @return [String] highlighted code
       def block_code(code, marker)
-        language, type, id = marker.split ':'
+        language, type, id = (marker || 'text').split ':'
         highlighted = Albino.colorize code, language
         case type
         when 'demo', 'test'
@@ -94,7 +94,7 @@ module Aladdin
       # @param [String] document    html document
       # @return [String] sanitized document
       def postprocess(document)
-        HTML.sanitize.clean(@nav.render + document)
+        HTML.sanitize.clean(@nav.render + document.force_encoding('utf-8'))
       end
 
       private

@@ -4,12 +4,13 @@ module Aladdin
   module Render
 
     # Keeps track of document sections and renders a navigation bar.
-    class Navigation
+    class Navigation < Template
+
+      # HAML template for navigation bar
+      TEMPLATE = 'nav.haml'
 
       # Creates a new navigation bar.
       def initialize
-        file = File.join Aladdin::VIEWS[:haml], 'nav.haml'
-        @template = Haml::Engine.new(File.read file)
         @sections = []
       end
 
@@ -22,8 +23,8 @@ module Aladdin
       end
 
       # Renders the navigation bar in HTML.
-      def render
-        @template.render Object.new, sections: @sections
+      def render(locals={})
+        super locals.merge(sections: @sections)
       end
 
     end
