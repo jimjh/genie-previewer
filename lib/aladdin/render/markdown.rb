@@ -31,9 +31,8 @@ module Aladdin
       class << self; attr_reader :sanitize, :entities; end
 
       # Paragraphs that start and end with braces are treated as JSON blocks
-      # and are parsed for questions/answers. If the paragraph does not contain
-      # valid JSON, it will be rendered as a simple text paragraph.
-      PROBLEM_REGEX = %r<^\s*{[^}]+}\s*$>
+      # and are parsed for questions/answers.
+      PROBLEM_REGEX = %r<^\s*{.+$>
 
       # Paragraphs that only contain images are rendered differently.
       IMAGE_REGEX = %r{^\s*<img[^<>]+>\s*$}
@@ -114,7 +113,8 @@ module Aladdin
       # @param [String] json            JSON markup
       # @return [String] rendered HTML
       def problem(json)
-        problem = Problem.parse(HTML.entities.decode json)
+        b = '\\'
+        problem = Problem.parse(HTML.entities.decode(json).gsub(b, b * 4))
         problem.save! and problem.render(index: @prob += 1)
       end
 

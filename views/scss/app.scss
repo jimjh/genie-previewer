@@ -42,6 +42,12 @@ a.hero img {
   padding: 2px 2px 0 0;
 }
 
-.block-image {
+/* Styling within lesson */
+
+section[role='lesson'] .block-image {
   text-align: center;
+}
+
+section[role='lesson'] ul {
+  margin-left: 17px;
 }
