@@ -19,8 +19,7 @@ module Aladdin
       # @return [Boolean] true iff the json contains a valid MCQ.
       def valid?
         super and
-          answer.is_a? String and
-          not answer.empty?
+          not answer.nil?
       end
 
     end

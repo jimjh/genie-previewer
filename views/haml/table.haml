@@ -7,8 +7,8 @@
 
     %p= question
 
-    .row.collapse
-      .ten.columns.mobile-three
+    .row
+      .twelve.columns
         %table
           %thead
             -if headings
@@ -25,5 +25,6 @@
                       %input{name: "answer[#{i}][#{j}]", type: 'text'}
                     - else
                       = cell
+    .row
       .two.columns.mobile-one
-        %a.button.small.submit.expand.postfix.radius{href: '#'} Submit
+        %a.button.small.submit.radius{href: '#'} Submit
