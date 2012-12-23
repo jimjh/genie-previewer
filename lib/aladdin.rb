@@ -79,7 +79,7 @@ module Aladdin
   # File extension for solution files.
   DATA_EXT = '.sol'
 
-  # @comment FIXME: allow configuration?
+  # @todo TODO allow configuration?
   DATA_DIR = Dir.tmpdir
 
 end

@@ -65,7 +65,7 @@ module Aladdin
         @json[ID] ||= SecureRandom.uuid
       end
 
-      # @comment TODO: should probably show some error message in the preview,
+      # @TODO: should probably show some error message in the preview,
       # so that the author doesn't have to read the logs.
       def render(locals={})
         raise RenderError.new('Invalid problem.') unless valid?
@@ -78,7 +78,7 @@ module Aladdin
       end
 
       # Saves the answer to a file on disk.
-      # @comment TODO: should probably show some error message in the preview,
+      # @TODO: should probably show some error message in the preview,
       # so that the author doesn't have to read the logs.
       def save!
         raise RenderError.new('Invalid problem.') unless valid?

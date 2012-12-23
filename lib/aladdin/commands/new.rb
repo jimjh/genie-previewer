@@ -2,6 +2,7 @@
 require 'aladdin'
 require 'optparse'
 
+# Array of skeleton files to be copied over.
 SKELETON_FILES = %w(.genie.yml index.md images)
 
 opt_parser = OptionParser.new do |opts|
