@@ -15,22 +15,22 @@
   // TODO: refactor
 
   // Shows results of last submission at the given button and form.
-  var showResult = function(button, form) {
+  var showResult = function(form) {
     return function(result) {
       switch(result) {
       case true:
-        button.addClass('success');
         form.removeClass('error');
+        form.addClass('success');
         break;
       case false:
-        button.removeClass('success');
+        form.removeClass('success');
         form.addClass('error');
         break;
       default:
         $.each(result, function(i, row) {
           $.each(row, function(j, cell) {
             var input = form.find("input[name='answer["+i+"]["+j+"]']");
-            if (cell) input.addClass('success'); else input.addClass('error');
+            showResult(input)(cell);
           });
         });
       }
@@ -44,7 +44,7 @@
       var button = $(e.target);
       var form = button.parents('form');
       var id = form.find('input.q-id').val();
-      $.post('/verify/quiz/' + id, form.serialize(), showResult(button, form));
+      $.post('/verify/quiz/' + id, form.serialize(), showResult(form));
       return false;
     });
 
