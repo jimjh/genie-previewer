@@ -45,6 +45,10 @@ describe 'Weak Comparator' do
 
     it 'should accept numbers that are numerically equivalent' do
       dummy.same?('42.0000', 42).should be_true
+      dummy.same?('42e0', 42).should be_true
+      dummy.same?('42', 42).should be_true
+      dummy.same?('42.0000', 42.0).should be_true
+      dummy.same?('42e0', 42.0).should be_true
       dummy.same?('42', 42.0).should be_true
     end
 
@@ -69,17 +73,25 @@ describe 'Weak Comparator' do
       dummy.same?('T', false).should be_false
     end
 
-    it 'should accept enumerables that are the same' do
-      dummy.same?(%w(1 2 3.0), [1.0, 2.0, 3.0]).should be_true
+    it 'should accept hashes that are the same' do
+      dummy
+        .same?({'X' => 'a', 'Y' => '42', 'Z' => 't'},
+               {'X' => 'a', 'Y' =>  42.0, 'Z' => true})
+        .should eql('X' => true, 'Y' => true, 'Z' => true)
     end
 
-    it 'should reject enumerables that have different sizes' do
-      dummy.same?(%w(a b c), %w(x y)).should be_false
-      dummy.same?(%w(b c), %w(x y z)).should be_false
+    it 'should reject hashes that have different sizes' do
+      dummy
+        .same?({'X' => 'a', 'Y' => 'b'},
+              {X: 'a', Y: 'b', Z: 'c'})
+        .should be_false
     end
 
-    it 'should reject enumerables that have different elements' do
-      dummy.same?(%w(a b c), %w(a b x)).should be_false
+    it 'should reject hashes that have different elements' do
+      dummy
+        .same?({'X' => 'a', 'Y' => '42', 'Z' => 't'},
+               {'X' => 'a', 'Y' =>  16,  'Z' =>  true})
+        .should eql('X' => true, 'Y' => false, 'Z' => true)
     end
 
   end

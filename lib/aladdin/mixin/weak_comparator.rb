@@ -3,26 +3,33 @@ module Aladdin
 
   module Mixin
 
-    # Provides a rich comparison with weak-typing.
+    # Provides a richer comparison with weak-typing.
     # @see #same?
     module WeakComparator
 
-      # Compares +submitted+ against +saved+ for equality. Assumes that
+      # Compares +submitted+ against +saved+ and returns a simple diff. Assumes
+      # that:
       # - +saved+ is a ruby-marshalled value that carries rich type information
       # - +submitted+ is a user-submitted value that is either a string or an
-      #   enumerable.
+      #   hash
       #
-      # If +saved+ is +true+, then it will accept any +submitted+ that begins
-      # with 'T' or 't'. Similarly, if +saved+ is +false+, then it will accept
-      # any +submitted+ that begins with 'F' or 'f'.
+      # === Booleans
+      # If +saved+ is +true+, then it will accept any +submitted+ value that
+      # begins with 'T' or 't'. Similarly, if +saved+ is +false+, then it will
+      # accept any +submitted+ value that begins with 'F' or 'f'.
       #
-      # @param [String, Enumerable] submitted
-      # @param [String, Numeric, Boolean, Enumerable] saved
-      # @return [Boolean] true iff +submitted+ matches +saved+.
+      # === Numerics
+      # If +saved+ is a numeric, then it will accept any +submitted+ value that
+      # is numerically equivalent to +saved+. For example, if +saved+ is 0,
+      # then +'0.0'+ and +'0'+ will both be accepted.
+      #
+      # @param [String, Hash] submitted
+      # @param [String, Numeric, Boolean, Hash] saved
+      # @return [Boolean, Hash] diff
       def same?(submitted, saved)
         case saved
-        when Enumerable
-          Enumerable === submitted and same_enum? submitted, saved
+        when Hash
+          Hash === submitted and same_hash? submitted, saved
         when String then saved == submitted
         when Numeric then saved == JSON.parse(%|[#{submitted}]|).first
         when TrueClass, FalseClass then saved.to_s[0] == submitted.downcase[0]
@@ -33,19 +40,17 @@ module Aladdin
 
       private
 
-      # Compares two enumerables for equality. It checks that both +submitted+
-      # and +saved+ have the same number of elements, and then compares each
-      # pair of elements in order.
+      # Compares two hash and returns a simple diff. It checks that both
+      # +submitted+ and +saved+ have the same number of elements, and then
+      # compares each pair of elements in order.
       #
-      # @param [Enumerable] submitted
-      # @param [Enumerable] saved
-      # @return [Boolean] true iff +submitted+ matches +saved+.
+      # @param [Hash] submitted
+      # @param [Hash] saved
+      # @return [Boolean, Hash] diff
       # @see #same?
-      def same_enum?(submitted, saved)
-        return false unless saved.count == submitted.count
-        sub, sav = submitted.each_entry, saved.each_entry
-        loop { return false unless same? sub.next, sav.next }
-        true
+      def same_hash?(submitted, saved)
+        saved.count == submitted.count and
+          Hash[saved.map { |key, value| [key, same?(submitted[key], value)] }]
       end
 
     end

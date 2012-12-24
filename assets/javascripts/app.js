@@ -17,12 +17,22 @@
   // Shows results of last submission at the given button and form.
   var showResult = function(button, form) {
     return function(result) {
-      if (result) {
+      switch(result) {
+      case true:
         button.addClass('success');
         form.removeClass('error');
-      } else {
+        break;
+      case false:
         button.removeClass('success');
         form.addClass('error');
+        break;
+      default:
+        $.each(result, function(i, row) {
+          $.each(row, function(j, cell) {
+            var input = form.find("input[name='answer["+i+"]["+j+"]']");
+            if (cell) input.addClass('success'); else input.addClass('error');
+          });
+        });
       }
     };
   };
