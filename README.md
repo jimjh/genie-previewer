@@ -47,3 +47,10 @@ Note that the following directory names are reserved:
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+## Troublesome Parts
+
+1. Launch an Ubuntu instance
+1. Install ruby through rvm
+1. Install build-essentials
+1. install libxslt-dev libxml2-dev
