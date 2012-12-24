@@ -19,7 +19,7 @@ module Aladdin
       # @return [Boolean] true iff the json contains a valid MCQ.
       def valid?
         super and
-          not answer.nil?
+          not @json[ANSWER].nil?
       end
 
     end

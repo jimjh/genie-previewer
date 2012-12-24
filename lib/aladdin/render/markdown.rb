@@ -49,7 +49,7 @@ module Aladdin
         super options.merge(CONFIGURATION)
         exe_template = File.join(Aladdin::VIEWS[:haml], 'exe.haml')
         @exe, @nav = Haml::Engine.new(File.read exe_template), Navigation.new
-        @prob, @img = 0, 0
+        @prob, @img = 0, 0 # indices for Problem # and Figure #
       end
 
       # Pygmentizes code blocks.
@@ -62,8 +62,7 @@ module Aladdin
         case type
         when 'demo', 'test'
           executable id: id, raw: code, colored: highlighted
-        else highlighted
-        end
+        else highlighted end
       end
 
       # Detects problem blocks and image blocks.
@@ -113,7 +112,7 @@ module Aladdin
       # @param [String] json            JSON markup
       # @return [String] rendered HTML
       def problem(json)
-        b = '\\'
+        b = '\\' # unescape backslashes
         problem = Problem.parse(HTML.entities.decode(json).gsub(b, b * 4))
         problem.save! and problem.render(index: @prob += 1)
       end
