@@ -6,11 +6,12 @@ module Aladdin
   # Student submission.
   #
   # == DANGER DANGER DANGER ==
-  # Because it assumes that there is only one submission at a time, it's
-  # unsuitable for production use. This class does not impose any security
+  # The scratchspace code assumes that there is only one submission at a time,
+  # it's unsuitable for production use. It does not impose any security
   # restrictions at all.
   class Submission
     include Aladdin::Mixin::Logger
+    include Aladdin::Mixin::WeakComparator
 
     SCRATCHSPACE = '.__ss'
 
@@ -39,7 +40,7 @@ module Aladdin
     def verify_quiz
       id = @id.gsub File::SEPARATOR, '' # protect against directory attacks
       solution = File.expand_path id + Aladdin::DATA_EXT, Aladdin::DATA_DIR
-      File.open(solution, 'rb') { |f| @params['answer'] == Marshal.restore(f) }.to_json
+      File.open(solution, 'rb') { |f| same? @params['answer'], Marshal.restore(f) }.to_json
     rescue => e
       logger.warn e.message
       false.to_json

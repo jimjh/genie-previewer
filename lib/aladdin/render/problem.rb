@@ -60,34 +60,48 @@ module Aladdin
       accessor ID, *KEYS
 
       # Creates a new problem from the given JSON.
+      # @param [Hash] json          parsed JSON object
       def initialize(json)
         @json = json
         @json[ID] ||= SecureRandom.uuid
       end
 
-      # @TODO: should probably show some error message in the preview,
-      # so that the author doesn't have to read the logs.
+      # @todo TODO should probably show some error message in the preview,
+      #   so that the author doesn't have to read the logs.
       def render(locals={})
         raise RenderError.new('Invalid problem.') unless valid?
         super @json.merge(locals)
       end
 
-      # @return [String] answer
-      def answer
-        @json[ANSWER].to_s
-      end
-
       # Saves the answer to a file on disk.
-      # @TODO: should probably show some error message in the preview,
-      # so that the author doesn't have to read the logs.
+      # @todo TODO should probably show some error message in the preview,
+      #   so that the author doesn't have to read the logs.
       def save!
         raise RenderError.new('Invalid problem.') unless valid?
         solution = File.join(Aladdin::DATA_DIR, id + Aladdin::DATA_EXT)
         File.open(solution, 'wb+') { |file| Marshal.dump answer, file }
       end
 
+      # Retrieves the answer from the given JSON object in a serializable form.
+      # @see #serializable
+      # @return [String, Numeric, TrueClass, FalseClass] answer
+      def answer
+        serialize @json[ANSWER]
+      end
+
       private
 
+      # If +obj+ is one of String, Numeric, +true+, or +false+, the it's
+      # returned. Otherwise, +to_s+ is invoked on the object and returned.
+      # @return [String, Numeric, TrueClass, FalseClass] answer
+      def serialize(obj)
+        case obj
+        when String, Numeric, TrueClass, FalseClass then obj
+        else obj.to_s end
+      end
+
+      # Checks that all required {KEYS} exist in the JSON, and that the
+      # question is given as a string.
       # @return [Boolean] true iff the parsed json contains a valid problem.
       def valid?
         KEYS.all? { |key| @json.has_key? key } and question.is_a? String

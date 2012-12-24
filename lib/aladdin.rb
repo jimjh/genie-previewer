@@ -10,6 +10,7 @@ require 'yaml'
 require 'json'
 
 require 'aladdin/mixin/logger'
+require 'aladdin/mixin/weak_comparator'
 require 'aladdin/submission'
 require 'aladdin/render/markdown'
 
