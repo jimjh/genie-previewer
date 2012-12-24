@@ -66,6 +66,11 @@ module Aladdin
 
       # Iterates through each cell in the provided grid to look for answers
       # cells that require input and takes the answer from the answers array.
+      # For example, if the answer for a cell at [0][1] is 6, the returned
+      # hash will contain
+      #
+      #     {'0' => {'1' => 6}}
+      #
       # @return [Hash] answers
       def encode_answer
         encoded, ans = {}, @json[ANSWER]
@@ -73,7 +78,7 @@ module Aladdin
           row.each_with_index do |cell, j|
             next unless Table.input? cell
             encoded[i.to_s] ||= {}
-            encoded[i.to_s][j.to_s] = ans[i][j].to_s
+            encoded[i.to_s][j.to_s] = serialize ans[i][j]
           end
         end
         encoded

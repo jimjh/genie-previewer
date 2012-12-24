@@ -7,8 +7,8 @@ module Aladdin
     # the path to the HAML file.
     class Template
 
-      # Renders the given problem using {#template}.
-      # @comment TODO: should probably show some error message in the preview,
+      # Renders the given problem using {#view}.
+      # @todo TODO should probably show some error message in the preview,
       # so that the author doesn't have to read the logs.
       def render(locals={})
         view.render Object.new, locals

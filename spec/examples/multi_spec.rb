@@ -8,7 +8,7 @@ describe 'Multi' do
 
   include_context 'parser'
 
-  context 'given valid question' do
+  context 'given valid problem' do
 
     it 'should render an MCQ form' do
       text = <<-eos
@@ -34,7 +34,7 @@ describe 'Multi' do
 
   end
 
-  context 'given invalid question' do
+  context 'given invalid problem' do
 
     it 'should raise a RenderError if options is missing' do
       text = <<-eos
