@@ -1,6 +1,7 @@
 require 'aladdin/render/sanitize'
 require 'aladdin/render/error'
 require 'aladdin/render/template'
+require 'aladdin/render/header'
 require 'aladdin/render/image'
 require 'aladdin/render/problem'
 require 'aladdin/render/multi'
@@ -48,8 +49,9 @@ module Aladdin
       def initialize(options = {})
         super options.merge(CONFIGURATION)
         exe_template = File.join(Aladdin::VIEWS[:haml], 'exe.haml')
-        @exe, @nav = Haml::Engine.new(File.read exe_template), Navigation.new
-        @prob, @img = 0, 0 # indices for Problem # and Figure #
+        @exe = Haml::Engine.new(File.read exe_template)
+        @nav, @headers = Navigation.new, Headers.new
+        @prob, @img = 0, 0 # indices for Problem #, Figure #
       end
 
       # Pygmentizes code blocks.
@@ -77,15 +79,10 @@ module Aladdin
         p(text)
       end
 
-      # Increases all header levels by one and keeps track of document
-      # sections.
+      # Increases all header levels by one and keeps a navigation bar.
       def header(text, level)
-        level += 1
-        html = h(text, level)
-        if level == 2
-          index = @nav << text
-          html += "<a name='section_#{index}' data-magellan-destination='section_#{index}'/>"
-        end
+        html, name = h(text, level += 1)
+        @nav.append(text, name) if level == 2
         html
       end
 
@@ -120,14 +117,15 @@ module Aladdin
       # Prepares a block image. Raises {RenderError} or {ParseError} if the
       # given text does not contain a valid image block.
       def block_image(text)
-        image = Image.parse(text)
-        image.render(index: @img += 1)
+        Image.parse(text).render(index: @img += 1)
       end
 
       # Wraps the given text with header tags.
-      # @return [String] wrapped text
+      # @return [String] rendered HTML
+      # @return [String] anchor name
       def h(text, level)
-        "<h#{level}>#{text}</h#{level}>"
+        header = @headers.add(text, level)
+        return header.render, header.name
       end
 
       # Wraps the given text with paragraph tags.

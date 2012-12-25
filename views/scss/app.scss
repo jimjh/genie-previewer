@@ -44,11 +44,32 @@ a.hero img {
 }
 
 /* Styling within lesson */
+section[role='lesson'] {
 
-section[role='lesson'] .block-image {
-  text-align: center;
-}
+  .block-image {
+    text-align: center;
+  }
 
-section[role='lesson'] ul {
-  margin-left: 17px;
+  ul {
+    margin-left: 17px;
+  }
+
+  #{nest(headings(), 'a.anchor')} {
+    position: absolute;
+    padding-left: 60px;
+    margin-left: -60px;
+    display: block;
+  }
+
+  #{nest(headings(), 'a.anchor i')} {
+    display: none;
+    width: 16px;
+    font-size: 16px;
+  }
+
+  #{nest(append-selector(headings(), ':hover'), 'a.anchor i')} {
+    display: inline-block;
+    margin-left: -1.5em;
+  }
+
 }

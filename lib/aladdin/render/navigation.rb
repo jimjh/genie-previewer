@@ -11,15 +11,15 @@ module Aladdin
 
       # Creates a new navigation bar.
       def initialize
-        @sections = []
+        @sections = {}
       end
 
       # Adds a new section.
       # @param [String] heading      section heading
-      # @return [Fixnum] section index
-      def <<(heading)
-        @sections << heading
-        @sections.size - 1
+      # @param [String] name         anchor name
+      # @return [void]
+      def append(heading, name)
+        @sections[name] = heading
       end
 
       # Renders the navigation bar in HTML.
