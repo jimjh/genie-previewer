@@ -6,20 +6,20 @@ require 'haml'
 require 'redcarpet'
 require 'htmlentities'
 require 'sanitize'
-require 'yaml'
 require 'json'
+require 'active_support/core_ext/hash'
 
 require 'aladdin/mixin/logger'
 require 'aladdin/mixin/weak_comparator'
 require 'aladdin/submission'
 require 'aladdin/render/markdown'
 
-# Aladdin is a gem that tutorial authors can use to preview and test their
-# tutorials locally.
+# Aladdin is a gem that lesson authors can use to preview and test their
+# lessons locally.
 module Aladdin
 
   # Name of configuration file.
-  CONFIG_FILE = '.genie.yml'
+  CONFIG_FILE = 'manifest.json'
 
   # Default configuration options.
   DEFAULT_CONFIG = {
@@ -48,14 +48,12 @@ module Aladdin
 
     private
 
-    # Reads configuration options from +.genie.yml+ and merges it into
+    # Reads configuration options from {CONFIG_FILE} and merges it into
     # {DEFAULT_CONFIG}.
     def configure
       config_file = File.expand_path CONFIG_FILE, root
-      config = File.exists?(config_file) ? YAML.load_file(config_file) : {}
-      @config = DEFAULT_CONFIG.merge(config) { |k, l, r|
-        (l.is_a?(Hash) and r.is_a?(Hash)) ? l.merge(r) : r
-      }
+      config = JSON.parse(File.read config_file) rescue {}
+      @config = DEFAULT_CONFIG.deep_merge(config)
     end
 
     # Converts a hash to struct.
