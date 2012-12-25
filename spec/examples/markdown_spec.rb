@@ -27,7 +27,8 @@ describe 'Launching aladdin' do
 
     it 'should render HTML' do
       get '/a'
-      last_response.body.should match %{<h2>Hello World</h2>}
+      last_response.body.should match %{<h2}
+      last_response.body.should match %{Hello World}
     end
 
     it 'should return a 404 for missing files' do
