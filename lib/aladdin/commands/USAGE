@@ -1,0 +1,10 @@
+Usage:
+  aladdin COMMAND [options]
+
+Commands:
+  new                 # generates the skeleton for a new lesson
+  server              # launches a preview server
+
+Aladdin Options:
+  -v, [--version]     # show version number and quit
+  -h, [--help]        # show this help message and quit
