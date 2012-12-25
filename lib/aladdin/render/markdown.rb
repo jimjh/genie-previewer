@@ -41,7 +41,7 @@ module Aladdin
       # Renderer configuration options.
       CONFIGURATION = {
         hard_wrap:          true,
-        safe_links_only:    true,
+        no_styles:          true,
       }
 
       # Creates a new HTML renderer.
