@@ -19,8 +19,8 @@ module Aladdin
     default:  File.expand_path('views', root)
   }
 
-  # @todo TODO allow configuration?
   require 'tmpdir'
+  # @todo TODO allow configuration?
   DATA_DIR = Dir.tmpdir
 
   # File extension for solution files.

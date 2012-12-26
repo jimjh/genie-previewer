@@ -17,12 +17,12 @@ module Aladdin
       # Array of dot files to be copied over and renamed.
       DOT_FILES = %w(gitignore)
 
-      # Flags for {FileUtils.cp_r}
+      # Flags for {::FileUtils.cp_r}
       COPY_FLAGS = {verbose: true}
 
       # Copies skeleton files to given destination.
       # @param [String] dest          destination path
-      # @param [Hash]   flags         options for {FileUtils.cp_r}
+      # @param [Hash]   flags         options for {::FileUtils.cp_r}
       # @return [Void]
       def copy_files(dest, flags={})
         flags = COPY_FLAGS.merge flags
@@ -33,8 +33,8 @@ module Aladdin
         end
       end
 
-      # Prefixes +filename+ with the skeleton directory.
-      # @param [String] filename      name of file to resolve
+      # Prefixes +file+ with the skeleton directory.
+      # @param [String] file          name of file to resolve
       # @return [String] path
       def path_to(file)
         File.expand_path file, Aladdin::PATHS.skeleton

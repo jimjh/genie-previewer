@@ -10,7 +10,7 @@ module Aladdin
       # Renders the given problem using {#view}.
       # @todo TODO should probably show some error message in the preview,
       # so that the author doesn't have to read the logs.
-      # @params [Hash] locals         local variables to pass to the template
+      # @param [Hash] locals         local variables to pass to the template
       def render(locals={})
         view.render Object.new, locals
       end
