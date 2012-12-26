@@ -78,7 +78,7 @@ module Aladdin
       #   so that the author doesn't have to read the logs.
       def save!
         raise RenderError.new('Invalid problem.') unless valid?
-        solution = File.join(Aladdin::DATA_DIR, id + Aladdin::DATA_EXT)
+        solution = File.join(Aladdin::DATA_DIR, id + Aladdin::SOLUTION_EXT)
         File.open(solution, 'wb+') { |file| Marshal.dump answer, file }
       end
 

@@ -1,4 +1,6 @@
 # ~*~ encoding: utf-8 ~*~
+require 'aladdin/submission'
+
 module Aladdin
 
   # Sinatra app that serves the tutorial. Should be able to use this in a
@@ -94,7 +96,7 @@ module Aladdin
     get '/*' do |path|
       path = path.empty? ? INDEX : path.to_sym
       render_or_pass do
-        markdown(path, locals: Aladdin.config)
+        markdown(path, locals: Aladdin.config.to_hash)
       end
     end
 

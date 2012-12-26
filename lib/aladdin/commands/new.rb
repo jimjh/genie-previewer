@@ -1,6 +1,7 @@
 # ~*~ encoding: utf-8 ~*~
 require 'aladdin'
 require 'optparse'
+require 'aladdin/constants'
 
 module Aladdin
 
@@ -10,11 +11,8 @@ module Aladdin
     #   $> aladdin new path/to/lesson/root
     module New
 
-      # Path to the skeleton directory.
-      SKELETON_DIR = File.join File.dirname(__FILE__), *%w(.. .. .. skeleton)
-
       # Array of skeleton files to be copied over.
-      FILES     = %w(index.md images) << Aladdin::CONFIG_FILE
+      FILES     = %w(index.md images) << Aladdin::Config::FILE
 
       # Array of dot files to be copied over and renamed.
       DOT_FILES = %w(gitignore)
@@ -35,11 +33,11 @@ module Aladdin
         end
       end
 
-      # Prefixes +filename+ with {SKELETON_DIR}
+      # Prefixes +filename+ with the skeleton directory.
       # @param [String] filename      name of file to resolve
       # @return [String] path
       def path_to(file)
-        File.expand_path file, SKELETON_DIR
+        File.expand_path file, Aladdin::PATHS.skeleton
       end
 
       # Parses the command line arguments.

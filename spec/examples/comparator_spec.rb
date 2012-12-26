@@ -1,15 +1,11 @@
 # ~*~ encoding: utf-8 ~*~
 require 'spec_helper'
 
-class Dummy
-  include Aladdin::Mixin::WeakComparator
-end
-
 describe 'Weak Comparator' do
 
-  context 'given a dummy host' do
+  context 'given a comparator host' do
 
-    let(:dummy) { Dummy.new }
+    let(:comparator) { Aladdin::Support::WeakComparator }
 
     def random_string
       (0...50).map{ ('a'..'z').to_a[rand(26)] }.join
@@ -17,78 +13,78 @@ describe 'Weak Comparator' do
 
     it 'should accept simple strings that are exactly the same' do
       str = random_string
-      dummy.same?(str, str.clone).should be_true
+      comparator.same?(str, str.clone).should be_true
     end
 
     it 'should reject simple strings that are different' do
-      dummy.same?(random_string, random_string).should be_false
+      comparator.same?(random_string, random_string).should be_false
     end
 
     it 'should accept simple integers that are the same' do
       n = Random.rand(10000000)
-      dummy.same?(n.to_s, n).should be_true
+      comparator.same?(n.to_s, n).should be_true
     end
 
     it 'should reject simple integers that are different' do
       n1, n2 = Random.rand(1000000), Random.rand(1000000)
-      dummy.same?(n1.to_s, n2).should be_false
+      comparator.same?(n1.to_s, n2).should be_false
     end
 
     it 'should accept simple floats that are the same' do
       n = Random.rand
-      dummy.same?(n.to_s, n).should be_true
+      comparator.same?(n.to_s, n).should be_true
     end
 
     it 'should reject simple floats that are different' do
-      dummy.same?(Random.rand.to_s, Random.rand).should be_false
+      comparator.same?(Random.rand.to_s, Random.rand).should be_false
     end
 
     it 'should accept numbers that are numerically equivalent' do
-      dummy.same?('42.0000', 42).should be_true
-      dummy.same?('42e0', 42).should be_true
-      dummy.same?('42', 42).should be_true
-      dummy.same?('42.0000', 42.0).should be_true
-      dummy.same?('42e0', 42.0).should be_true
-      dummy.same?('42', 42.0).should be_true
+      comparator.same?('42.0000', 42).should be_true
+      comparator.same?('42e0', 42).should be_true
+      comparator.same?('42', 42).should be_true
+      comparator.same?('42.0000', 42.0).should be_true
+      comparator.same?('42e0', 42.0).should be_true
+      comparator.same?('42', 42.0).should be_true
     end
 
     it 'should reject non-numeric submissions for numeric answers' do
-      dummy.same?('x', 42.0).should be_false
-      dummy.same?('true', 42.0).should be_false
-      dummy.same?('{', 42.0).should be_false
-      dummy.same?([42], 42.0).should be_false
+      comparator.same?('x', 42.0).should be_false
+      comparator.same?('true', 42.0).should be_false
+      comparator.same?('{', 42.0).should be_false
+      comparator.same?([42], 42.0).should be_false
     end
 
     it 'should accept booleans that are the same' do
-      dummy.same?('true', true).should be_true
-      dummy.same?('T', true).should be_true
-      dummy.same?('false', false).should be_true
-      dummy.same?('F', false).should be_true
+      comparator.same?('true', true).should be_true
+      comparator.same?('T', true).should be_true
+      comparator.same?('false', false).should be_true
+      comparator.same?('F', false).should be_true
     end
 
     it 'should reject booleans that are different' do
-      dummy.same?('false', true).should be_false
-      dummy.same?('F', true).should be_false
-      dummy.same?('true', false).should be_false
-      dummy.same?('T', false).should be_false
+      comparator.same?('false', true).should be_false
+      comparator.same?('F', true).should be_false
+      comparator.same?('true', false).should be_false
+      comparator.same?('T', false).should be_false
     end
 
     it 'should accept hashes that are the same' do
-      dummy
+      comparator
         .same?({'X' => 'a', 'Y' => '42', 'Z' => 't'},
                {'X' => 'a', 'Y' =>  42.0, 'Z' => true})
         .should eql('X' => true, 'Y' => true, 'Z' => true)
     end
 
     it 'should reject hashes that have different sizes' do
-      dummy
+      comparator
         .same?({'X' => 'a', 'Y' => 'b'},
               {X: 'a', Y: 'b', Z: 'c'})
         .should be_false
     end
 
     it 'should reject hashes that have different elements' do
-      dummy
+      comparator
         .same?({'X' => 'a', 'Y' => '42', 'Z' => 't'},
                {'X' => 'a', 'Y' =>  16,  'Z' =>  true})
         .should eql('X' => true, 'Y' => false, 'Z' => true)

@@ -10,8 +10,8 @@ module Aladdin
   # it's unsuitable for production use. It does not impose any security
   # restrictions at all.
   class Submission
-    include Aladdin::Mixin::Logger
-    include Aladdin::Mixin::WeakComparator
+    include Support::Logger
+    include Support::WeakComparator
 
     SCRATCHSPACE = '.__ss'
 
@@ -39,7 +39,7 @@ module Aladdin
     # @return [String] (json-encoded) true iff the submitted answer is correct.
     def verify_quiz
       id = @id.gsub File::SEPARATOR, '' # protect against directory attacks
-      solution = File.expand_path id + Aladdin::DATA_EXT, Aladdin::DATA_DIR
+      solution = File.expand_path id + Aladdin::SOLUTION_EXT, Aladdin::DATA_DIR
       File.open(solution, 'rb') { |f| same? @params['answer'], Marshal.restore(f) }.to_json
     rescue => e
       logger.warn e.message

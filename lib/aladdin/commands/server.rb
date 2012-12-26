@@ -26,6 +26,8 @@ module Aladdin
         def server(argv=ARGV, opts={})
           Server.parse! argv
           Aladdin.launch opts.merge(from: argv[0])
+        rescue => e
+          puts e.message
         end
       end
 

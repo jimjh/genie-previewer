@@ -7,8 +7,8 @@ describe 'Launching aladdin' do
   context 'in a simple directory of markdown documents' do
 
     before do
-      Aladdin.send :configure
       dir = File.expand_path('markdown', Test::DATA_DIR)
+      Aladdin.config = Aladdin::Config.new dir
       Aladdin::App.set :views, Aladdin::VIEWS.merge(markdown: dir)
     end
 

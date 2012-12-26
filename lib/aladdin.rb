@@ -9,78 +9,32 @@ require 'sanitize'
 require 'json'
 require 'active_support/core_ext/hash'
 
-require 'aladdin/mixin/logger'
-require 'aladdin/mixin/weak_comparator'
-require 'aladdin/submission'
+require 'aladdin/constants'
+require 'aladdin/config'
+require 'aladdin/support'
 require 'aladdin/render/markdown'
 
 # Aladdin is a gem that lesson authors can use to preview and test their
 # lessons locally.
 module Aladdin
-
-  # Name of configuration file.
-  CONFIG_FILE = 'manifest.json'
-
-  # Default configuration options.
-  DEFAULT_CONFIG = {
-    'verify' => {
-      'bin' => 'make',
-      'arg_prefix' => ''
-     },
-    'title' => 'Lesson X',
-    'description' => 'This is a placeholder description. You should provide your own',
-    'categories' => []
-  }
-
   class << self
 
-    attr_reader :config, :root
+    include Support::Logger
+    attr_accessor :config
 
     # Launches the tutorial app using 'thin' as the default webserver.
     # @option opts [String] from        path to author's markdown documents;
     #                                   defaults to the current working directory
     def launch(opts = {})
-      @root = opts[:from] || '.'
-      configure
+      root = opts[:from] || Dir.pwd
+      @config = Config.new root
       Aladdin::App.set :views, Aladdin::VIEWS.merge(markdown: root)
       Aladdin::App.run!
-    end
-
-    private
-
-    # Reads configuration options from {CONFIG_FILE} and merges it into
-    # {DEFAULT_CONFIG}.
-    def configure
-      config_file = File.expand_path CONFIG_FILE, root
-      config = JSON.parse(File.read config_file) rescue {}
-      @config = DEFAULT_CONFIG.deep_merge(config)
-    end
-
-    # Converts a hash to struct.
-    def to_struct(hash)
-      Struct.new( *(k = hash.keys) ).new( *hash.values_at( *k ) )
+    rescue => e
+      logger.error e.message
     end
 
   end
-
-  # Paths to different types of views.
-  VIEWS = {
-    haml:     File.expand_path('../../views/haml', __FILE__),
-    scss:     File.expand_path('../../views/scss', __FILE__),
-    default:  File.expand_path('../../views', __FILE__)
-  }
-
-  # Paths to other parts of the library.
-  PATHS = to_struct(
-    assets: File.expand_path('../../assets', __FILE__),
-  ).freeze
-
-  # File extension for solution files.
-  DATA_EXT = '.sol'
-
-  # @todo TODO allow configuration?
-  DATA_DIR = Dir.tmpdir
-
 end
 
 require 'aladdin/app'

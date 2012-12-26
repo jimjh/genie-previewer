@@ -1,18 +1,21 @@
 # ~*~ encoding: utf-8 ~*~
-require 'logger'
+require 'active_support/core_ext/logger'
 
 module Aladdin
 
-  # aladdin-mixin module contains all other mixin modules.
-  module Mixin
+  module Support
 
+    # Provides a convenient global logger.
     # @example
-    #   require 'logger'
-    #   logger.info "hey"
+    #   class X
+    #     include Logger
+    #     def x; logger.info "hey"; end
+    #   end
+    # @todo FIXME allow configuration
     module Logger
 
-      # Global Logger.
-      LOGGER = ::Logger.new STDOUT
+      # Global logger.
+      LOGGER = ::Logger.new(STDOUT)
 
       # Retrieves the global logger.
       def logger

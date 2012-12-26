@@ -1,9 +1,9 @@
 # ~*~ encoding: utf-8 ~*~
 module Aladdin
 
-  module Mixin
+  module Support
 
-    # Provides a richer comparison with weak-typing.
+    # Provides a rich comparison with weak-typing.
     # @see #same?
     module WeakComparator
 
@@ -21,7 +21,7 @@ module Aladdin
       # === Numerics
       # If +saved+ is a numeric, then it will accept any +submitted+ value that
       # is numerically equivalent to +saved+. For example, if +saved+ is 0,
-      # then +'0.0'+ and +'0'+ will both be accepted.
+      # then both +'0.0'+ and +'0'+ will be accepted.
       #
       # @param [String, Hash] submitted
       # @param [String, Numeric, Boolean, Hash] saved
@@ -40,9 +40,9 @@ module Aladdin
 
       private
 
-      # Compares two hash and returns a simple diff. It checks that both
-      # +submitted+ and +saved+ have the same number of elements, and then
-      # compares each pair of elements in order.
+      # Compares two hashes and returns a simple diff. It checks that both
+      # +submitted+ and +saved+ have the same number of keys, and then
+      # compares all key-value pairs in order.
       #
       # @param [Hash] submitted
       # @param [Hash] saved
@@ -52,6 +52,8 @@ module Aladdin
         saved.count == submitted.count and
           Hash[saved.map { |key, value| [key, same?(submitted[key], value)] }]
       end
+
+      extend self
 
     end
 

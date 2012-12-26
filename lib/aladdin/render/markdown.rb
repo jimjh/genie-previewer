@@ -24,7 +24,7 @@ module Aladdin
     #
     # @see http://github.github.com/github-flavored-markdown/
     class HTML < ::Redcarpet::Render::HTML
-      include Aladdin::Mixin::Logger
+      include Aladdin::Support::Logger
 
       @sanitize = Aladdin::Sanitize.new
       @entities = HTMLEntities.new

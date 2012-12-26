@@ -35,7 +35,8 @@ module Aladdin
         require_relative 'commands/server'
         send command, argv, opts
       end
-    rescue
+    rescue => e
+      puts e.message
       puts File.read USAGE
       exit 1
     end
