@@ -3,3 +3,4 @@
 
 $:.unshift File.join File.dirname(__FILE__), *%w(.. lib)
 require 'aladdin/commands'
+Aladdin::Commands.parse!

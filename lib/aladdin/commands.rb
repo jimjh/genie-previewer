@@ -21,8 +21,8 @@ module Aladdin
     end
 
     # Parses the command line arguments.
-    def parse!
-      command = ARGV.shift
+    def parse!(argv=ARGV, opts={})
+      command = argv.shift
       case command
       when '--version', '-v'
         puts "Aladdin #{Aladdin::VERSION}"
@@ -33,7 +33,7 @@ module Aladdin
       else
         require_relative 'commands/new'
         require_relative 'commands/server'
-        send command
+        send command, argv, opts
       end
     rescue
       puts File.read USAGE
@@ -45,5 +45,3 @@ module Aladdin
   end
 
 end
-
-Aladdin::Commands.parse!

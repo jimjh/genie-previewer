@@ -10,19 +10,22 @@ module Aladdin
     #   $> aladdin server path/to/lesson/root
     module Server
 
-      def parse!
+      # Parses the command line arguments.
+      # @param [Array] argv           command line arguments
+      # @return [Void]
+      def parse!(argv)
         opt_parser = OptionParser.new do |opts|
           opts.banner = "Usage: aladdin server [options] [LESSON_PATH]"
         end
-        opt_parser.parse!
+        opt_parser.parse! argv
       end
 
       extend self
 
       Commands.register do
-        def server
-          Server.parse!
-          Aladdin.launch from: ARGV[0]
+        def server(argv=ARGV, opts={})
+          Server.parse! argv
+          Aladdin.launch opts.merge(from: argv[0])
         end
       end
 

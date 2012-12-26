@@ -24,12 +24,14 @@ module Aladdin
 
       # Copies skeleton files to given destination.
       # @param [String] dest          destination path
+      # @param [Hash]   flags         options for {FileUtils.cp_r}
       # @return [Void]
-      def copy_files(dest)
+      def copy_files(dest, flags={})
+        flags = COPY_FLAGS.merge flags
         paths = FILES.map { |file| path_to file }
-        FileUtils.cp_r paths, dest, COPY_FLAGS
+        FileUtils.cp_r paths, dest, flags
         DOT_FILES.each do |file|
-          FileUtils.cp_r path_to(file), File.join(dest, '.' + file), COPY_FLAGS
+          FileUtils.cp_r path_to(file), File.join(dest, '.' + file), flags
         end
       end
 
@@ -41,20 +43,21 @@ module Aladdin
       end
 
       # Parses the command line arguments.
+      # @param [Array] argv           command line arguments
       # @return [Void]
-      def parse!
+      def parse!(argv)
         opt_parser = OptionParser.new do |opts|
           opts.banner = "Usage: aladdin new [options] [LESSON_PATH]"
         end
-        opt_parser.parse!
+        opt_parser.parse! argv
       end
 
       extend self
 
       Commands.register do
-        def new
-          New.parse!
-          New.copy_files(ARGV[0] || Dir.pwd)
+        def new(argv=ARGV, opts={})
+          New.parse! argv
+          New.copy_files(argv[0] || Dir.pwd, opts)
         end
       end
 
