@@ -6,15 +6,8 @@ describe 'Launching aladdin' do
 
   context 'in a simple directory of markdown documents' do
 
-    before do
-      dir = File.expand_path('markdown', Test::DATA_DIR)
-      Aladdin.config = Aladdin::Config.new dir
-      Aladdin::App.set :views, Aladdin::VIEWS.merge(markdown: dir)
-    end
-
-    def app
-      Aladdin::App
-    end
+    let(:dir) { File.expand_path('markdown', Test::DATA_DIR) }
+    include_context 'app'
 
     it 'should map URLs to their filenames' do
       get '/a'

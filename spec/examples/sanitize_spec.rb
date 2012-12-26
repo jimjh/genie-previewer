@@ -7,14 +7,8 @@ describe 'Using sanitize' do
   # Only a small number of tests! Mostly trusting Sanitize, for now.
   context 'in a directory of malicious files' do
 
-    before do
-      dir = File.expand_path('sanitize', Test::DATA_DIR)
-      Aladdin::App.set :views, Aladdin::VIEWS.merge(markdown: dir)
-    end
-
-    def app
-      Aladdin::App
-    end
+    let(:dir) { File.expand_path('sanitize', Test::DATA_DIR) }
+    include_context 'app'
 
     it 'should remove script tags' do
       get '/script'

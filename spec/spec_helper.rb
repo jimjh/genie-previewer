@@ -49,3 +49,4 @@ RSpec.configure do |config|
 end
 
 require_relative 'shared/parse_context'
+require_relative 'shared/app_context'
