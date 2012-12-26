@@ -47,6 +47,7 @@ module Aladdin
       # @return [void]
       def configure_assets
         set :public_folder, Aladdin::PATHS.assets
+        set :static_paths, Proc.new { Aladdin.config['static_paths'] }
       end
 
       # Configures ZURB's compass to compile aladdin's scss assets.
@@ -65,11 +66,6 @@ module Aladdin
         Tilt.register Tilt::RedcarpetTemplate::Redcarpet2, *%w(markdown mkd md)
         set :markdown, MARKDOWN_OPTIONS
         set :haml, escape_html: true
-      end
-
-      # @return [Array] array of static paths
-      def static_paths
-        Aladdin.config['static_paths']
       end
 
     end
@@ -97,7 +93,7 @@ module Aladdin
       render_or_pass { scss path.to_sym }
     end
 
-    get one_of(static_paths) do |path|
+    get one_of(settings.static_paths) do |path|
       send_file File.join(settings.root, path)
     end
 
