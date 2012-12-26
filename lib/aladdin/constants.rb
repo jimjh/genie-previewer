@@ -20,6 +20,7 @@ module Aladdin
   }
 
   # @todo TODO allow configuration?
+  require 'tmpdir'
   DATA_DIR = Dir.tmpdir
 
   # File extension for solution files.

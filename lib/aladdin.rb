@@ -1,18 +1,11 @@
 # ~*~ encoding: utf-8 ~*~
-require 'sinatra'
-require 'zurb-foundation'
-require 'albino'
-require 'haml'
-require 'redcarpet'
-require 'htmlentities'
-require 'sanitize'
 require 'json'
 require 'active_support/core_ext/hash'
 
 require 'aladdin/constants'
 require 'aladdin/config'
 require 'aladdin/support'
-require 'aladdin/render/markdown'
+require 'aladdin/render'
 
 # Aladdin is a gem that lesson authors can use to preview and test their
 # lessons locally.

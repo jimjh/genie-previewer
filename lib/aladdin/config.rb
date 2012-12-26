@@ -35,10 +35,10 @@ module Aladdin
         ConfigError.new("We found a manifest file at #{path}, but couldn't " +
           "read it. Please ensure that the permissions are set correctly.")
       else
-        config = JSON.parse(File.read path)
+        config = ::JSON.parse(File.read path)
         @config = DEFAULTS.deep_merge config
       end
-    rescue JSON::JSONError => e
+    rescue ::JSON::JSONError => e
       raise ConfigError.new e.message
     end
 

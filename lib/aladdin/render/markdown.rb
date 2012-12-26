@@ -1,18 +1,11 @@
+# ~*~ encoding: utf-8 ~*~
 require 'aladdin/render/sanitize'
 require 'aladdin/render/error'
-require 'aladdin/render/template'
-require 'aladdin/render/header'
-require 'aladdin/render/image'
-require 'aladdin/render/problem'
-require 'aladdin/render/multi'
-require 'aladdin/render/short'
-require 'aladdin/render/table'
-require 'aladdin/render/navigation'
+require 'aladdin/render/templates'
 
-# ~*~ encoding: utf-8 ~*~
 module Aladdin
 
-  # aladdin-render module for all of Laddin's rendering needs.
+  # aladdin-render module for all of Aladdin's rendering needs.
   module Render
 
     # HTML Renderer for Markdown.

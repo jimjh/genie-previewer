@@ -1,4 +1,6 @@
 # ~*~ encoding: utf-8 ~*~
+require 'sinatra'
+require 'zurb-foundation'
 require 'aladdin/submission'
 
 module Aladdin
