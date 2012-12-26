@@ -19,7 +19,7 @@ module Aladdin
     class HTML < ::Redcarpet::Render::HTML
       include Aladdin::Support::Logger
 
-      @sanitize = Aladdin::Sanitize.new
+      @sanitize = Sanitize.new
       @entities = HTMLEntities.new
 
       class << self; attr_reader :sanitize, :entities; end
