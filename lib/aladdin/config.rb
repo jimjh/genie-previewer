@@ -6,7 +6,7 @@ module Aladdin
   class ConfigError < StandardError; end
 
   # Configuration options for Aladdin.
-  class Config
+  class Config < Hash
 
     # Name of configuration file.
     FILE = 'manifest.json'
@@ -19,7 +19,8 @@ module Aladdin
        },
       'title' => 'Lesson X',
       'description' => 'This is a placeholder description. You should provide your own',
-      'categories' => []
+      'categories' => [],
+      'static_paths' => %w(images)
     }
 
     # Creates a new configuration from the file at the given path. Merges the
@@ -30,21 +31,18 @@ module Aladdin
       path = File.expand_path FILE, root
       case
       when (not File.exist? path)
-        ConfigError.new("We couldn't find a manifest file at #{path}")
+        raise ConfigError.new("We couldn't find a manifest file at #{path}")
       when (not File.readable? path)
-        ConfigError.new("We found a manifest file at #{path}, but couldn't " +
-          "read it. Please ensure that the permissions are set correctly.")
+        raise ConfigError.new("We found a manifest file at #{path}, but " +
+          "couldn't read it. Please ensure that the permissions are set " +
+          "correctly.")
       else
-        config = ::JSON.parse(File.read path)
-        @config = DEFAULTS.deep_merge config
+        config = DEFAULTS.deep_merge ::JSON.parse(File.read path)
+        super nil
+        merge! config
       end
     rescue ::JSON::JSONError => e
       raise ConfigError.new e.message
-    end
-
-    # @return [Hash] a hash copy of the configuration options
-    def to_hash
-      @config.clone
     end
 
   end

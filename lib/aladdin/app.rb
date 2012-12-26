@@ -10,6 +10,7 @@ module Aladdin
   # +bin/aladdin+ executable.
   # Adapted from https://github.com/jerodsanto/sinatra-foundation-skeleton/
   class App < Sinatra::Base
+    extend Support::OneOfPattern
 
     # Default page
     INDEX = :index
@@ -66,6 +67,11 @@ module Aladdin
         set :haml, escape_html: true
       end
 
+      # @return [Array] array of static paths
+      def static_paths
+        Aladdin.config['static_paths']
+      end
+
     end
 
     # Calls the given +block+ and invokes +pass+ on error.
@@ -91,14 +97,14 @@ module Aladdin
       render_or_pass { scss path.to_sym }
     end
 
-    get '/img/*' do |path|
-      send_file File.join('img', path)
+    get one_of(static_paths) do |path|
+      send_file File.join(settings.root, path)
     end
 
     get '/*' do |path|
       path = path.empty? ? INDEX : path.to_sym
       render_or_pass do
-        markdown(path, locals: Aladdin.config.to_hash)
+        markdown(path, locals: Aladdin.config)
       end
     end
 
