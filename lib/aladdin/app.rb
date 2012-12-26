@@ -53,7 +53,7 @@ module Aladdin
       def configure_compass
         Compass.configuration do |config|
           config.http_path = '/'
-          config.http_images_path = '/images'
+          config.http_images_path = '/__img'
         end
         set :scss, Compass.sass_engine_options
       end
@@ -87,7 +87,7 @@ module Aladdin
       configure_compass
     end
 
-    get '/stylesheets/*.css' do |path|
+    get '/__css/*.css' do |path|
       render_or_pass { scss path.to_sym }
     end
 

@@ -12,12 +12,12 @@
   %meta{name: 'viewport', content: 'width=device-width'}
 
   %title= title
-  %link{rel: 'stylesheet', href:'stylesheets/app.css'}
-  %link{rel: 'stylesheet', href:'stylesheets/general_foundicons.css'}
+  %link{rel: 'stylesheet', href:'__css/app.css'}
+  %link{rel: 'stylesheet', href:'__css/general_foundicons.css'}
   /[if lt IE 8]
-    %link{rel: 'stylesheet', href:'stylesheets/general_foundicons_ie7.css'}
+    %link{rel: 'stylesheet', href:'__css/general_foundicons_ie7.css'}
 
-  %script{src: 'javascripts/foundation/modernizr.foundation.js'}
+  %script{src: '__js/foundation/modernizr.foundation.js'}
 
 %body
 
@@ -29,7 +29,7 @@
           %h1= title
           %h4
             <!-- TODO: user gravatar -->
-            %img{src: 'images/no_gravatar.gif', width: 20, height: 20, alt: 'John Doe'}
+            %img{src: '__img/no_gravatar.gif', width: 20, height: 20, alt: 'John Doe'}
             <!-- TOOD: user name -->
             %small John Doe
           %h4.subheader= description
@@ -43,7 +43,7 @@
           %h1
             %a.th.hero{href: '#'}
               <!-- TODO: graphic from user's repo -->
-              %img{src: 'images/graphic.png'}
+              %img{src: '__img/graphic.png'}
 
     %hr/
     %section{role: 'lesson'}
@@ -61,27 +61,27 @@
         %span <!-- TODO: score goes here -->
 
   -# foundation
-  %script{src: 'javascripts/foundation/jquery.js'}
-  %script{src: 'javascripts/foundation/jquery.cookie.js'}
-  %script{src: 'javascripts/foundation/jquery.event.move.js'}
-  %script{src: 'javascripts/foundation/jquery.event.swipe.js'}
-  %script{src: 'javascripts/foundation/jquery.foundation.accordion.js'}
-  %script{src: 'javascripts/foundation/jquery.foundation.alerts.js'}
-  %script{src: 'javascripts/foundation/jquery.foundation.buttons.js'}
-  %script{src: 'javascripts/foundation/jquery.foundation.clearing.js'}
-  %script{src: 'javascripts/foundation/jquery.foundation.forms.js'}
-  %script{src: 'javascripts/foundation/jquery.foundation.magellan.js'}
-  %script{src: 'javascripts/foundation/jquery.foundation.mediaQueryToggle.js'}
-  %script{src: 'javascripts/foundation/jquery.foundation.navigation.js'}
-  %script{src: 'javascripts/foundation/jquery.foundation.tabs.js'}
-  %script{src: 'javascripts/foundation/jquery.foundation.tooltips.js'}
-  %script{src: 'javascripts/foundation/jquery.foundation.topbar.js'}
-  %script{src: 'javascripts/foundation/jquery.placeholder.js'}
-  %script{src: 'javascripts/foundation/app.js'}
+  %script{src: '__js/foundation/jquery.js'}
+  %script{src: '__js/foundation/jquery.cookie.js'}
+  %script{src: '__js/foundation/jquery.event.move.js'}
+  %script{src: '__js/foundation/jquery.event.swipe.js'}
+  %script{src: '__js/foundation/jquery.foundation.accordion.js'}
+  %script{src: '__js/foundation/jquery.foundation.alerts.js'}
+  %script{src: '__js/foundation/jquery.foundation.buttons.js'}
+  %script{src: '__js/foundation/jquery.foundation.clearing.js'}
+  %script{src: '__js/foundation/jquery.foundation.forms.js'}
+  %script{src: '__js/foundation/jquery.foundation.magellan.js'}
+  %script{src: '__js/foundation/jquery.foundation.mediaQueryToggle.js'}
+  %script{src: '__js/foundation/jquery.foundation.navigation.js'}
+  %script{src: '__js/foundation/jquery.foundation.tabs.js'}
+  %script{src: '__js/foundation/jquery.foundation.tooltips.js'}
+  %script{src: '__js/foundation/jquery.foundation.topbar.js'}
+  %script{src: '__js/foundation/jquery.placeholder.js'}
+  %script{src: '__js/foundation/app.js'}
 
   -# mathjax
   %script{src: 'https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'}
-  %script{src: 'javascripts/app.js'}
+  %script{src: '__js/app.js'}
 
 :plain
   </html>
