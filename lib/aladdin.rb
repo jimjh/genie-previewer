@@ -21,6 +21,7 @@ module Aladdin
     def launch(opts = {})
       root = opts[:from] || Dir.pwd
       @config = Config.new root
+      require 'aladdin/app'
       Aladdin::App.set :views, Aladdin::VIEWS.merge(markdown: root)
       Aladdin::App.run!
     rescue => e
@@ -30,4 +31,3 @@ module Aladdin
   end
 end
 
-require 'aladdin/app'
