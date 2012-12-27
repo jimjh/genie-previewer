@@ -48,6 +48,10 @@ describe 'Launching aladdin' do
       last_response.body.force_encoding('utf-8').should eql(File.read js)
     end
 
+    it 'should serve files at author\'s static paths' do
+      pending
+    end
+
   end
 
 end
