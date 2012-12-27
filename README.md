@@ -34,10 +34,18 @@ Update `index.md` and provide your unit tests in the lesson directory. Finally, 
 $> aladdin server
 ```
 
-Note that the following directory names are reserved:
+A short guide can be obtained using
 
-- javascripts
-- stylesheets
+```sh
+$> aladdin --help
+```
+
+Note that the following filenames are reserved:
+
+- `__js`
+- `__css`
+- `__font`
+- `__img`
 - verify
 
 ## Contributing
@@ -53,4 +61,4 @@ Note that the following directory names are reserved:
 1. Launch an Ubuntu instance
 1. Install ruby through rvm
 1. Install build-essentials
-1. install libxslt-dev libxml2-dev
+1. Install libxslt-dev libxml2-dev

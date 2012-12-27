@@ -1,6 +1,7 @@
 # ~*~ encoding: utf-8 ~*~
 require 'json'
 require 'active_support/core_ext/hash'
+require 'active_support/core_ext/string'
 
 require 'aladdin/constants'
 require 'aladdin/config'
@@ -22,6 +23,7 @@ module Aladdin
       root = opts[:from] || Dir.pwd
       @config = Config.new root
       require 'aladdin/app'
+      Aladdin::App.set :root, root
       Aladdin::App.set :views, Aladdin::VIEWS.merge(markdown: root)
       Aladdin::App.run!
     rescue => e

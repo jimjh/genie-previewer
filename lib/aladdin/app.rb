@@ -10,6 +10,7 @@ module Aladdin
   # +bin/aladdin+ executable.
   # Adapted from https://github.com/jerodsanto/sinatra-foundation-skeleton/
   class App < Sinatra::Base
+    extend Support::OneOfPattern
 
     # Default page
     INDEX = :index
@@ -46,6 +47,7 @@ module Aladdin
       # @return [void]
       def configure_assets
         set :public_folder, Aladdin::PATHS.assets
+        set :static_paths, Proc.new { Aladdin.config['static_paths'] }
       end
 
       # Configures ZURB's compass to compile aladdin's scss assets.
@@ -53,7 +55,7 @@ module Aladdin
       def configure_compass
         Compass.configuration do |config|
           config.http_path = '/'
-          config.http_images_path = '/images'
+          config.http_images_path = '/__img'
         end
         set :scss, Compass.sass_engine_options
       end
@@ -87,18 +89,18 @@ module Aladdin
       configure_compass
     end
 
-    get '/stylesheets/*.css' do |path|
+    get '/__css/*.css' do |path|
       render_or_pass { scss path.to_sym }
     end
 
-    get '/img/*' do |path|
-      send_file File.join('img', path)
+    get one_of(settings.static_paths) do |path|
+      send_file File.join(settings.root, path)
     end
 
     get '/*' do |path|
       path = path.empty? ? INDEX : path.to_sym
       render_or_pass do
-        markdown(path, locals: Aladdin.config.to_hash)
+        markdown(path, locals: Aladdin.config)
       end
     end
 

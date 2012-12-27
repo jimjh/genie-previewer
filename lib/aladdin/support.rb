@@ -2,6 +2,7 @@
 require 'aladdin/support/core_ext'
 require 'aladdin/support/logger'
 require 'aladdin/support/weak_comparator'
+require 'aladdin/support/multiroute'
 
 module Aladdin
   # aladdin-support is a collection of utility classes and modules for use in
