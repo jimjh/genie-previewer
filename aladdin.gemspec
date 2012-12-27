@@ -21,7 +21,7 @@ Gem::Specification.new do |gem|
   # PATHS
   gem.require_paths = %w[lib]
   gem.files         = %w[LICENSE README.md] +
-                        Dir.glob('lib/**/*.rb') +
+                        Dir.glob('lib/**/*') +
                         Dir.glob('assets/**/*') +
                         Dir.glob('views/**/*') +
                         Dir.glob('bin/**/*') +
