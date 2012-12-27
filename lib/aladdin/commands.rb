@@ -1,4 +1,6 @@
 # ~*~ encoding: utf-8 ~*~
+require 'aladdin/version'
+
 Signal.trap('INT') { puts; exit(1) }
 
 module Aladdin
