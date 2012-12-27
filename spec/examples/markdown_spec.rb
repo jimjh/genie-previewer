@@ -49,7 +49,9 @@ describe 'Launching aladdin' do
     end
 
     it 'should serve files at author\'s static paths' do
-      pending
+      get '/images/x.png'
+      last_response.should be_ok
+      last_response.content_type.should match %{^image/png}
     end
 
   end
