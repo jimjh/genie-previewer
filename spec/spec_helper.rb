@@ -20,7 +20,6 @@ $LOAD_PATH.unshift Test::ROOT
 
 # configure test environment
 require 'aladdin'
-require 'aladdin/app'
 require 'rspec'
 require 'rack/test'
 ENV['RACK_ENV'] = 'test'

@@ -27,25 +27,31 @@ describe 'Launching aladdin' do
     it 'should return a 404 for missing files' do
       get '/c'
       last_response.should be_not_found
-      get '/javascripts/x.js'
+      get '/__js/x.js'
       last_response.should be_not_found
     end
 
     it 'should compile scss to stylesheets' do
       # only for development/test mode
-      get '/stylesheets/app.css'
+      get '/__css/app.css'
       last_response.should be_ok
       last_response.content_type.should match %{^text/css}
     end
 
     it 'should serve static assets' do
       # only for development/test mode
-      js = 'javascripts/foundation/jquery.js'
+      js = '__js/foundation/jquery.js'
       get "/#{js}"
       last_response.should be_ok
       last_response.content_type.should match %{^application/javascript}
       js = File.expand_path js, File.join(Test::ROOT, '..', 'assets')
       last_response.body.force_encoding('utf-8').should eql(File.read js)
+    end
+
+    it 'should serve files at author\'s static paths' do
+      get '/images/x.png'
+      last_response.should be_ok
+      last_response.content_type.should match %{^image/png}
     end
 
   end
