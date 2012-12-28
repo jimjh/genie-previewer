@@ -1,4 +1,6 @@
 # ~*~ encoding: utf-8 ~*~
+require 'active_support/core_ext/hash'
+
 module Aladdin
 
   # Raised when there is a configuration error.
