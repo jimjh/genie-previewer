@@ -17,14 +17,14 @@ module Aladdin
 
     # Default configuration options.
     DEFAULTS = {
-      'verify' => {
+      verify: {
         'bin' => 'make',
         'arg_prefix' => ''
        },
-      'title' => 'Lesson X',
-      'description' => 'This is a placeholder description. You should provide your own',
-      'categories' => [],
-      'static_paths' => %w(images)
+      title: 'Lesson X',
+      description: 'This is a placeholder description. You should provide your own',
+      categories: [],
+      static_paths: %w(images)
     }
 
     # Creates a new configuration from the file at the given path. Merges the
@@ -35,7 +35,8 @@ module Aladdin
       @path = File.expand_path FILE, root
       ensure_readable
       super nil
-      merge! DEFAULTS.deep_merge ::JSON.parse File.read @path
+      newsets = ::JSON.parse File.read @path
+      merge! DEFAULTS.deep_merge newsets.symbolize_keys
       ensure_valid
     rescue ::JSON::JSONError => e
       raise ConfigError.new e.message

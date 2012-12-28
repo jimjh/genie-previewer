@@ -54,7 +54,7 @@ module Aladdin
         # FIXME: catch errors
         filename = SecureRandom.uuid
         IO.write(filename, @input)
-        bin = File.join '..', Aladdin.config['verify']['bin']
+        bin = File.join '..', Aladdin.config[:verify]['bin']
         `#{bin} --id=#{@id} --input=#{filename}`
         IO.read 'genie-results.json'
       end

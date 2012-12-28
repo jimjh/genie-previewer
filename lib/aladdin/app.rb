@@ -47,7 +47,7 @@ module Aladdin
       # @return [void]
       def configure_assets
         set :public_folder, Aladdin::PATHS.assets
-        set :static_paths, Proc.new { Aladdin.config['static_paths'] }
+        set :static_paths, Proc.new { Aladdin.config[:static_paths] }
       end
 
       # Configures ZURB's compass to compile aladdin's scss assets.

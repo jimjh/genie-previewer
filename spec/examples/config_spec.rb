@@ -44,7 +44,7 @@ describe 'Config' do
     it 'should override the defaults with the user supplied values' do
       IO.write File.join(@dir, Aladdin::Config::FILE), {title: '2.0'}.to_json
       config = Aladdin::Config.new @dir
-      config['title'].should eq '2.0'
+      config[:title].should eq '2.0'
     end
 
   end
