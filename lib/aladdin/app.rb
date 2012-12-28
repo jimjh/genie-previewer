@@ -19,13 +19,7 @@ module Aladdin
     MARKDOWN_OPTIONS = {
       renderer:           Aladdin::Render::HTML,
       layout_engine:      :haml,
-      no_intra_emphasis:  true,
-      tables:             true,
-      fenced_code_blocks: true,
-      autolink:           true,
-      strikethrough:      true,
-      tables:             true,
-    }
+    }.merge MARKDOWN_EXTENSIONS
 
     class << self
       private

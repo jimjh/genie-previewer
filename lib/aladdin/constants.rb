@@ -26,4 +26,14 @@ module Aladdin
   # File extension for solution files.
   SOLUTION_EXT = '.sol'
 
+  # Markdown extensions for Redcarpet
+  MARKDOWN_EXTENSIONS = {
+    no_intra_emphasis:  true,
+    tables:             true,
+    fenced_code_blocks: true,
+    autolink:           true,
+    strikethrough:      true,
+    tables:             true,
+  }
+
 end

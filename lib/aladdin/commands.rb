@@ -29,7 +29,7 @@ module Aladdin
       when '--version', '-v'
         puts "Aladdin #{Aladdin::VERSION}"
         exit 0
-      when '--help', '-h'
+      when nil, '--help', '-h'
         puts File.read USAGE
         exit 0
       else
