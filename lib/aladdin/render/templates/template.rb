@@ -24,7 +24,7 @@ module Aladdin
       def view
         return @view unless @view.nil?
         file = File.join Aladdin::VIEWS[:haml], self.class::TEMPLATE
-        @view = Haml::Engine.new(File.read file)
+        @view = Haml::Engine.new(File.read file, format: :html5)
       end
 
     end

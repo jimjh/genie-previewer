@@ -59,7 +59,7 @@ module Aladdin
       def configure_markdown
         Tilt.register Tilt::RedcarpetTemplate::Redcarpet2, *%w(markdown mkd md)
         set :markdown, MARKDOWN_OPTIONS
-        set :haml, escape_html: true
+        set :haml, escape_html: true, format: :html5
       end
 
     end
