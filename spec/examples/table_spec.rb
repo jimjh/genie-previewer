@@ -39,7 +39,7 @@ describe 'Table' do
       p = parse(h.to_json)
       p.should_not be_valid
       expect { p.render(index: 0) }.to raise_error(Aladdin::Render::RenderError)
-      expect { p.save! }.to raise_error(Aladdin::Render::RenderError)
+      expect { p.save! name: 'untitled' }.to raise_error(Aladdin::Render::RenderError)
     end
 
     it 'should raise a RenderError if the grid is malformed' do
