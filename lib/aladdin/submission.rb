@@ -17,7 +17,7 @@ module Aladdin
 
     # Creates a new student submission.
     # @param [String] id      exercise ID
-    # @param [Type]   type    quiz or code
+    # @param [Type]   type    problem or code
     # @param [Hash]   params  form values
     # @param [String] input   student input
     def initialize(id, type, params, input)
@@ -28,16 +28,16 @@ module Aladdin
     def verify
       case @type
       when Type::CODE then verify_code
-      when Type::QUIZ then verify_quiz
+      when Type::PROBLEM then verify_problem
       end
     end
 
     private
 
-    # Verifies quiz answers by comparing the submitted answer against the
+    # Verifies problem answers by comparing the submitted answer against the
     # answer in the solution file.
     # @return [String] (json-encoded) true iff the submitted answer is correct.
-    def verify_quiz
+    def verify_problem
       id = @id.gsub File::SEPARATOR, '' # protect against directory attacks
       solution = File.expand_path id + Aladdin::SOLUTION_EXT, Aladdin::DATA_DIR
       File.open(solution, 'rb') { |f| same? @params['answer'], Marshal.restore(f) }.to_json
@@ -81,8 +81,8 @@ module Aladdin
 
     # Submission Type, for use as enum.
     module Type
-      # Quiz Type
-      QUIZ = 'quiz'
+      # Problem Type
+      PROBLEM = 'problem'
       # Code Type
       CODE = 'code'
     end

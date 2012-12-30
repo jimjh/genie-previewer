@@ -47,8 +47,7 @@
     $('a.button.submit').click(function(e) {
       var button = $(e.target);
       var form = button.parents('form');
-      var id = form.find('input.q-id').val();
-      $.post('/verify/quiz/' + id, form.serialize(), showResult(form));
+      $.post(form.attr('action'), form.serialize(), showResult(form));
       return false;
     });
 

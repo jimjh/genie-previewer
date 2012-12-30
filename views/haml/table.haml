@@ -1,10 +1,8 @@
 -# coding: UTF-8
-%form.question{id: "question_#{id}"}
+%form.problem{action: 'verify/problem/' + id, 'accept-charset' => 'UTF-8', id: "problem_#{id}", method: 'post'}
   %fieldset
 
     %legend Problem #{index}
-    %input.q-id{type: 'hidden', value: id}
-
     %p= question
 
     .row
