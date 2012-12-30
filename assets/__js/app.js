@@ -9,6 +9,10 @@
 /*jshint strict:true unused:true*/
 /*global $*/
 
+/* Development on this file has stopped. Eventually, the previewer should
+ * reference a minified version of the Javascript file from the production
+ * site.*/
+
 ;(function () {
   'use strict';
 
