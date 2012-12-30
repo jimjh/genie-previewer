@@ -35,6 +35,7 @@ module Aladdin
       CONFIGURATION = {
         hard_wrap:          true,
         no_styles:          true,
+        name:               'untitled'
       }
 
       # Creates a new HTML renderer.
@@ -42,6 +43,7 @@ module Aladdin
       def initialize(options = {})
         super options.merge(CONFIGURATION)
         exe_template = File.join(Aladdin::VIEWS[:haml], 'exe.haml')
+        @name = options[:name]
         @exe = Haml::Engine.new(File.read exe_template)
         @nav, @headers = Navigation.new, Headers.new
         @prob, @img = 0, 0 # indices for Problem #, Figure #
@@ -104,7 +106,7 @@ module Aladdin
       def problem(json)
         b = '\\' # unescape backslashes
         problem = Problem.parse(HTML.entities.decode(json).gsub(b, b * 4))
-        problem.save! and problem.render(index: @prob += 1)
+        problem.save! @name and problem.render(index: @prob += 1)
       end
 
       # Prepares a block image. Raises {RenderError} or {ParseError} if the
