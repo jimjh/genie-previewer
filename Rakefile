@@ -11,25 +11,25 @@ task :default => :spec
 
 namespace :assets do
 
+  ASSETS = Pathname.new(Dir.pwd) + 'public' + 'assets'
+
   namespace :compile do
 
     desc 'Update javascript assets'
     task :js do
       input = Pathname.new '../genie-game/app/assets/javascripts'
-      output = Pathname.new 'assets/__js'
       exec <<-eos
-        coffee -j #{output + 'app.js'} -c #{input + 'verify.js.coffee'}
-        uglifyjs --output #{output + 'app.min.js'} #{output + 'app.js'}
+        coffee -j #{ASSETS + 'app.js'} -c #{input + 'verify.js.coffee'}
+        uglifyjs --output #{ASSETS + 'app.min.js'} #{ASSETS + 'app.js'}
       eos
     end
 
     desc 'Update css assets'
     task :css do
       project = '../genie-game'
-      output = Pathname.new(Dir.pwd) + 'public' + 'assets'
       Dir.chdir project do
         exec <<-eos
-          bundle exec compass compile -e production --force --css-dir #{output}
+          bundle exec compass compile -e production --force --css-dir #{ASSETS}
         eos
       end
     end
