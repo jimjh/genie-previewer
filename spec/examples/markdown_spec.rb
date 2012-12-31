@@ -40,11 +40,11 @@ describe 'Launching aladdin' do
 
     it 'should serve static assets' do
       # only for development/test mode
-      js = '__js/foundation/jquery.js'
+      js = 'foundation/jquery.js'
       get "/#{js}"
       last_response.should be_ok
       last_response.content_type.should match %{^application/javascript}
-      js = File.expand_path js, File.join(Test::ROOT, '..', 'assets')
+      js = File.expand_path js, File.join(Test::ROOT, '..', 'public')
       last_response.body.force_encoding('utf-8').should eql(File.read js)
     end
 

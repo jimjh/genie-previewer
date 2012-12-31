@@ -23,6 +23,19 @@ namespace :assets do
       eos
     end
 
+    desc 'Update css assets'
+    task :css do
+      project = '../genie-game'
+      output = Pathname.new(Dir.pwd) + 'public' + 'assets'
+      Dir.chdir project do
+        exec <<-eos
+          bundle exec compass compile -e production --force --css-dir #{output}
+        eos
+      end
+    end
+
   end
+
+  task :compile => [:'compile:js', :'compile:css']
 
 end

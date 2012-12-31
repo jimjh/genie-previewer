@@ -8,7 +8,7 @@ module Aladdin
   # Paths to other parts of the library.
   PATHS = {
     root:     root,
-    assets:   File.expand_path('assets', root),
+    public:   File.expand_path('public', root),
     skeleton: File.expand_path('skeleton', root)
   }.to_struct.freeze
 
