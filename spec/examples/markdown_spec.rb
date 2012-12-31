@@ -27,13 +27,13 @@ describe 'Launching aladdin' do
     it 'should return a 404 for missing files' do
       get '/c'
       last_response.should be_not_found
-      get '/__js/x.js'
+      get '/assets/x.js'
       last_response.should be_not_found
     end
 
     it 'should compile scss to stylesheets' do
       # only for development/test mode
-      get '/__css/app.css'
+      get '/assets/application.css'
       last_response.should be_ok
       last_response.content_type.should match %{^text/css}
     end
@@ -41,10 +41,10 @@ describe 'Launching aladdin' do
     it 'should serve static assets' do
       # only for development/test mode
       js = 'foundation/jquery.js'
-      get "/#{js}"
+      get "/assets/#{js}"
       last_response.should be_ok
       last_response.content_type.should match %{^application/javascript}
-      js = File.expand_path js, File.join(Test::ROOT, '..', 'public')
+      js = File.expand_path js, File.join(Test::ROOT, '..', 'public', 'assets')
       last_response.body.force_encoding('utf-8').should eql(File.read js)
     end
 
