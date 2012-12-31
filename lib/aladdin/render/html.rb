@@ -26,10 +26,10 @@ module Aladdin
 
       # Paragraphs that start and end with braces are treated as JSON blocks
       # and are parsed for questions/answers.
-      PROBLEM_REGEX = %r<^\s*{.+$>
+      PROBLEM_REGEX = /\A\s*{.+\z/m
 
       # Paragraphs that only contain images are rendered differently.
-      IMAGE_REGEX = %r{^\s*<img[^<>]+>\s*$}
+      IMAGE_REGEX = /\A\s*<img[^<>]+>\s*\z/m
 
       # Renderer configuration options.
       CONFIGURATION = {
