@@ -16,7 +16,6 @@ end
 
 # add gem and current dir to load path
 $LOAD_PATH.unshift File.join(Test::ROOT, '..', 'lib')
-$LOAD_PATH.unshift Test::ROOT
 
 # configure test environment
 require 'aladdin'
