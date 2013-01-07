@@ -24,7 +24,7 @@ module Aladdin
   DATA_DIR = Dir.tmpdir
 
   # Name of index file
-  INDEX_FILE   = 'index.inc'
+  INDEX_MD   = 'index.md'
 
   # File extension for solution files.
   SOLUTION_EXT = '.sol'

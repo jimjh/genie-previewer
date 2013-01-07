@@ -12,7 +12,7 @@ module Aladdin
     module New
 
       # Array of skeleton files to be copied over.
-      FILES     = %w(index.md images) << Aladdin::Config::FILE
+      FILES     = ['images', Aladdin::Config::FILE, Aladdin::INDEX_MD]
 
       # Array of dot files to be copied over and renamed.
       DOT_FILES = %w(gitignore)
