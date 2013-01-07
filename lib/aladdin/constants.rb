@@ -23,6 +23,9 @@ module Aladdin
   # @todo TODO allow configuration?
   DATA_DIR = Dir.tmpdir
 
+  # Name of index file
+  INDEX_FILE   = 'index.inc'
+
   # File extension for solution files.
   SOLUTION_EXT = '.sol'
 
