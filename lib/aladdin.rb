@@ -10,25 +10,23 @@ require 'aladdin/support'
 # Aladdin is a gem that lesson authors can use to preview and test their
 # lessons locally.
 module Aladdin
-  class << self
+  extend self
 
-    include Support::Logger
-    attr_accessor :config
+  attr_accessor :config
 
-    # Launches the tutorial app using 'thin' as the default webserver.
-    # @option opts [String] from        path to author's markdown documents;
-    #                                   defaults to the current working directory
-    def launch(opts = {})
-      root = opts[:from] || Dir.pwd
-      @config = Config.new root
-      require 'aladdin/app'
-      Aladdin::App.set :root, root
-      Aladdin::App.set :views, Aladdin::VIEWS.merge(markdown: root)
-      Aladdin::App.run!
-    rescue => e
-      logger.error e.message
-    end
-
+  # Launches the previewer app.
+  # @option opts [String] from        path to author's markdown documents;
+  #                                   defaults to the current working directory
+  def launch(opts = {})
+    root = opts[:from] || Dir.pwd
+    @config = Config.new root
+    require 'aladdin/app'
+    Aladdin::App.set :root, root
+    Aladdin::App.set :views, Aladdin::VIEWS.merge(markdown: root)
+    Aladdin::App.run!
+  rescue => e
+    puts e.message
   end
+
 end
 

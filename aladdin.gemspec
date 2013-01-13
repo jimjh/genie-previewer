@@ -32,7 +32,7 @@ Gem::Specification.new do |gem|
   # DEPENDENCIES
   gem.add_dependency 'sinatra',       '~> 1.3'
   gem.add_dependency 'activesupport', '~> 3.2.9'
-  gem.add_dependency 'spirit'
+  gem.add_dependency 'spirit' # TODO: set version
 
   # DEVELOPMENT AND DOCUMENTATION
   gem.add_development_dependency 'yard',          '~> 0.8.3'

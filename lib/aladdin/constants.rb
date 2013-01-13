@@ -18,14 +18,4 @@ module Aladdin
     default:  File.expand_path('views', root)
   }
 
-  require 'tmpdir'
-  # @todo TODO allow configuration?
-  DATA_DIR = Dir.tmpdir
-
-  # Name of index file
-  INDEX_MD   = 'index.md'
-
-  # File extension for solution files.
-  SOLUTION_EXT = '.sol'
-
 end

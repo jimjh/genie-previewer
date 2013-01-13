@@ -1,7 +1,7 @@
 # ~*~ encoding: utf-8 ~*~
 require 'aladdin'
 require 'optparse'
-require 'aladdin/constants'
+require 'spirit/constants'
 
 module Aladdin
 
@@ -12,7 +12,7 @@ module Aladdin
     module New
 
       # Array of skeleton files to be copied over.
-      FILES     = ['images', Aladdin::Config::FILE, Aladdin::INDEX_MD]
+      FILES     = ['images', Aladdin::Config::FILE, Spirit::INDEX_MD]
 
       # Array of dot files to be copied over and renamed.
       DOT_FILES = %w(gitignore)

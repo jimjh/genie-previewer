@@ -12,9 +12,6 @@ module Aladdin
   class App < Sinatra::Base
     extend Support::OneOfPattern
 
-    # Default page
-    INDEX = :index
-
     class << self
       private
 
@@ -49,9 +46,8 @@ module Aladdin
     end
 
     # Calls the given +block+ and invokes +pass+ on error.
-    # @param block        block to call within wrapper
     def render_or_pass(&block)
-      begin return block.call
+      begin yield
       rescue Exception => e
         logger.error e.message
         pass
@@ -69,16 +65,14 @@ module Aladdin
 
     get '/*' do |path|
       pass if path.starts_with? '__sinatra__'
-      path = path.empty? ? INDEX : path.to_sym
-      render_or_pass do
-        markdown(path, locals: Aladdin.config)
-      end
+      path = path.empty? ? :index : path.to_sym
+      render_or_pass { markdown(path, locals: Aladdin.config) }
     end
 
     post '/verify/:type/:id' do
       input = request.body.read
       content_type :json
-      Submission.new(params[:id], params[:type], params, input).verify
+      Submission.new(params[:id], params[:type], params, input, logger).verify
     end
 
   end
