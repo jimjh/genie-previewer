@@ -12,7 +12,7 @@ module Aladdin
     module New
 
       # Array of skeleton files to be copied over.
-      FILES     = ['images', Aladdin::Config::FILE, Spirit::INDEX_MD]
+      FILES     = ['images', Spirit::MANIFEST, Spirit::INDEX]
 
       # Array of dot files to be copied over and renamed.
       DOT_FILES = %w(gitignore)

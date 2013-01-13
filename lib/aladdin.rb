@@ -1,8 +1,4 @@
 # ~*~ encoding: utf-8 ~*~
-require 'json'
-require 'active_support/core_ext/hash'
-require 'active_support/core_ext/string'
-
 require 'aladdin/constants'
 require 'aladdin/config'
 require 'aladdin/support'
