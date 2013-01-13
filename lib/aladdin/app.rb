@@ -1,10 +1,12 @@
 # ~*~ encoding: utf-8 ~*~
 require 'sinatra'
+require 'spirit'
+require 'spirit/tilt/template'
 require 'aladdin/submission'
 
 module Aladdin
 
-  # Sinatra app that serves the tutorial. Should be able to use this in a
+  # Sinatra app that serves the lesson preview. Should be able to use this in a
   # config.ru file or as middleware. Authors should launch the app using the
   # +bin/aladdin+ executable.
   class App < Sinatra::Base
@@ -12,12 +14,6 @@ module Aladdin
 
     # Default page
     INDEX = :index
-
-    # Default markdown options.
-    MARKDOWN_OPTIONS = {
-      renderer:           Aladdin::Render::HTML,
-      layout_engine:      :haml,
-    }.merge MARKDOWN_EXTENSIONS
 
     class << self
       private
@@ -38,7 +34,6 @@ module Aladdin
       # Configures path to static assets in the public folder.
       # @return [void]
       def configure_assets
-        puts Aladdin::PATHS.public
         set :public_folder, Aladdin::PATHS.public
         set :static_paths, Proc.new { Aladdin.config[:static_paths] }
       end
@@ -46,9 +41,9 @@ module Aladdin
       # Registers redcarpet2 and configures aladdin's markdown renderer.
       # @return [void]
       def configure_markdown
-        Tilt.register Tilt::RedcarpetTemplate::Redcarpet2, *%w(markdown mkd md)
-        set :markdown, MARKDOWN_OPTIONS
-        set :haml, escape_html: true, format: :html5
+        Tilt.register Spirit::Tilt::Template, *%w(markdown mkd md)
+        set :markdown, layout: :layout, layout_engine: :haml
+        set :haml,     escape_html: true, format: :html5
       end
 
     end

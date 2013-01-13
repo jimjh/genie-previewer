@@ -6,7 +6,6 @@ require 'active_support/core_ext/string'
 require 'aladdin/constants'
 require 'aladdin/config'
 require 'aladdin/support'
-require 'aladdin/render'
 
 # Aladdin is a gem that lesson authors can use to preview and test their
 # lessons locally.
