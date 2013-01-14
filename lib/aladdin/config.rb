@@ -31,9 +31,11 @@ module Aladdin
     # @param [String] root            path to lesson root
     def initialize(root)
       super nil
-      @path = File.expand_path Spirit::MANIFEST, root
+      @path = File.join root, Spirit::MANIFEST
       ensure_readable
       merge! DEFAULTS.deep_merge Spirit::Manifest.load_file @path
+    rescue Spirit::Error => e
+      not_parseable e
     end
 
     private
@@ -46,7 +48,7 @@ module Aladdin
     end
 
     def missing
-      raise ConfigError.new <<-eos.squish
+      raise ConfigError, <<-eos.squish
         We expected a manifest file at #{@path}, but couldn't find it. Please
         ensure that you have a file named #{Spirit::MANIFEST} at the root
         of your lesson directory.
@@ -54,9 +56,16 @@ module Aladdin
     end
 
     def not_readable
-      raise ConfigError.new <<-eos.squish
+      raise ConfigError, <<-eos.squish
         We found a manifest file at #{@path}, but couldn't open it for reading.
         Please ensure that you have the permissions to read the file.
+      eos
+    end
+
+    def not_parseable(e)
+      raise ConfigError, <<-eos.strip_heredoc
+      We found a manifest file at #{@path}, but couldn't parse it. The following error message was returned from the parser:
+          #{e.message}
       eos
     end
 

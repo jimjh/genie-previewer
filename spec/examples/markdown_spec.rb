@@ -44,6 +44,7 @@ describe 'Aladdin::App' do
       get '/images/x.png'
       last_response.should be_ok
       last_response.content_type.should match %{^image/png}
+      pending 'other static paths to test one_of'
     end
 
   end

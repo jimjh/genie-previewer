@@ -14,14 +14,24 @@ describe Aladdin::Config do
 
   context 'missing manifest' do
     it 'raises a ConfigError' do
-      expect { Aladdin::Config.new dir }.to raise_error Aladdin::ConfigError
+      msg = "We expected a manifest file at #{dir + Spirit::MANIFEST}"
+      expect { Aladdin::Config.new dir }.to raise_error Aladdin::ConfigError, /#{msg}/
     end
   end
 
   context 'given an unreadable manifest' do
     before(:each) { IO.write dir + Spirit::MANIFEST, '{}', perm: 0333 }
     it 'raises a ConfigError' do
-      expect { Aladdin::Config.new dir }.to raise_error Aladdin::ConfigError
+      msg = "We found a manifest file at #{dir + Spirit::MANIFEST}, but couldn't open it"
+      expect { Aladdin::Config.new dir }.to raise_error Aladdin::ConfigError, /#{msg}/
+    end
+  end
+
+  context 'given an invalid manifest' do
+    before(:each) { IO.write dir + Spirit::MANIFEST, 'abc:def' }
+    it 'raises a ConfigError' do
+      msg = "We found a manifest file at #{dir + Spirit::MANIFEST}, but couldn't parse it"
+      expect { Aladdin::Config.new dir }.to raise_error Aladdin::ConfigError, /#{msg}/
     end
   end
 
