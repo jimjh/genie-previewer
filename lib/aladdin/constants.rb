@@ -15,28 +15,7 @@ module Aladdin
   # Paths to different types of views.
   VIEWS = {
     haml:     File.expand_path('views/haml', root),
-    scss:     File.expand_path('views/scss', root),
     default:  File.expand_path('views', root)
-  }
-
-  require 'tmpdir'
-  # @todo TODO allow configuration?
-  DATA_DIR = Dir.tmpdir
-
-  # Name of index file
-  INDEX_MD   = 'index.md'
-
-  # File extension for solution files.
-  SOLUTION_EXT = '.sol'
-
-  # Markdown extensions for Redcarpet
-  MARKDOWN_EXTENSIONS = {
-    no_intra_emphasis:  true,
-    tables:             true,
-    fenced_code_blocks: true,
-    autolink:           true,
-    strikethrough:      true,
-    tables:             true,
   }
 
 end
