@@ -9,7 +9,7 @@ module Aladdin
   class ConfigError < StandardError; end
 
   # Configuration options for Aladdin. Gets all of its values from
-  # {Spirit::MANIFEST}. Values in this file should not be trusted
+  # {::Spirit::MANIFEST}. Values in this file should not be trusted
   # because they are given by the user.
   class Config < Hash
 

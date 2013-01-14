@@ -1,6 +1,7 @@
 # ~*~ encoding: utf-8 ~*~
 require 'rubygems'
 require 'bundler/setup'
+require 'pathname'
 
 begin Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
@@ -10,12 +11,9 @@ rescue Bundler::BundlerError => e
 end
 
 module Test
-  ROOT = File.dirname __FILE__
-  DATA_DIR = File.expand_path 'data', ROOT
+  ROOT = Pathname.new(__FILE__).dirname
 end
-
-# add gem and current dir to load path
-$LOAD_PATH.unshift File.join(Test::ROOT, '..', 'lib')
+$LOAD_PATH.unshift Test::ROOT + '..' + 'lib'
 
 # configure test environment
 require 'aladdin'
@@ -27,8 +25,6 @@ ENV['RACK_ENV'] = 'test'
 def silence_output
   @orig_stderr = $stderr
   @orig_stdout = $stdout
-
-  # redirect stderr and stdout to /dev/null
   $stderr = File.new('/dev/null', 'w')
   $stdout = File.new('/dev/null', 'w')
 end
@@ -43,8 +39,7 @@ end
 
 RSpec.configure do |config|
   config.before(:all) { silence_output }
-  config.after(:all) { enable_output }
+  config.after(:all)  { enable_output }
 end
 
-require_relative 'shared/parse_context'
 require_relative 'shared/app_context'
