@@ -1,20 +1,17 @@
-# ~*~ encoding: utf-8 ~*~
+  # ~*~ encoding: utf-8 ~*~
 require 'active_support/core_ext/hash'
-require 'json'
-require 'aladdin/constants'
+require 'active_support/core_ext/string'
+require 'spirit'
 
 module Aladdin
 
   # Raised when there is a configuration error.
   class ConfigError < StandardError; end
 
-  # Configuration options for Aladdin. Gets all of its values from {FILE}.
-  # Values in this file should not be trusted because they are given by the
-  # user.
+  # Configuration options for Aladdin. Gets all of its values from
+  # {::Spirit::MANIFEST}. Values in this file should not be trusted
+  # because they are given by the user.
   class Config < Hash
-
-    # Name of configuration file.
-    FILE = 'manifest.json'
 
     # Default configuration options.
     DEFAULTS = {
@@ -33,14 +30,12 @@ module Aladdin
     # {ConfigError} if the file could not be read or parsed.
     # @param [String] root            path to lesson root
     def initialize(root)
-      @path = File.expand_path FILE, root
-      ensure_readable
       super nil
-      newsets = ::JSON.parse File.read @path
-      merge! DEFAULTS.deep_merge newsets.symbolize_keys
-      ensure_valid
-    rescue ::JSON::JSONError => e
-      raise ConfigError.new e.message
+      @path = File.join root, Spirit::MANIFEST
+      ensure_readable
+      merge! DEFAULTS.deep_merge Spirit::Manifest.load_file @path
+    rescue Spirit::Error => e
+      not_parseable e
     end
 
     private
@@ -52,34 +47,25 @@ module Aladdin
       not_readable unless File.readable? @path
     end
 
-    # Raises {ConfigError} unless the all of the values in the supplied
-    # configuration have the same type as those in {DEFAULTS}.
-    def ensure_valid(defaults=DEFAULTS, supplied=self)
-      supplied.each do |key, value|
-        bad_type(key, defaults[key], value) unless value.is_a? defaults[key].class
-        ensure_valid(defaults[key], value) if Hash === value
-      end
-    end
-
     def missing
-      raise ConfigError.new <<-eos.squish
+      raise ConfigError, <<-eos.squish
         We expected a manifest file at #{@path}, but couldn't find it. Please
-        ensure that you have a file named #{Aladdin::Config::File} at the root
+        ensure that you have a file named #{Spirit::MANIFEST} at the root
         of your lesson directory.
       eos
     end
 
     def not_readable
-      raise ConfigError.new <<-eos.squish
+      raise ConfigError, <<-eos.squish
         We found a manifest file at #{@path}, but couldn't open it for reading.
         Please ensure that you have the permissions to read the file.
       eos
     end
 
-    def bad_type(key, expected, actual)
-      raise ConfigError.new <<-eos.squish
-        The #{key} option in the manifest file should be a #{expected.class.name}
-        instead of a #{actual.class.name}.
+    def not_parseable(e)
+      raise ConfigError, <<-eos.strip_heredoc
+      We found a manifest file at #{@path}, but couldn't parse it. The following error message was returned from the parser:
+          #{e.message}
       eos
     end
 

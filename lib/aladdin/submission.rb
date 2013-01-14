@@ -10,7 +10,6 @@ module Aladdin
   # it's unsuitable for production use. It does not impose any security
   # restrictions at all.
   class Submission
-    include Support::Logger
     include Support::WeakComparator
 
     SCRATCHSPACE = '.__ss'
@@ -20,8 +19,8 @@ module Aladdin
     # @param [Type]   type    problem or code
     # @param [Hash]   params  form values
     # @param [String] input   student input
-    def initialize(id, type, params, input)
-      @id, @type, @params, @input = id, type, params, input
+    def initialize(id, type, params, input, logger)
+      @id, @type, @params, @input, @logger = id, type, params, input, logger
     end
 
     # Verifies the student's submission.
@@ -34,12 +33,14 @@ module Aladdin
 
     private
 
+    attr_reader :logger
+
     # Verifies problem answers by comparing the submitted answer against the
     # answer in the solution file.
     # @return [String] (json-encoded) true iff the submitted answer is correct.
     def verify_problem
       id = @id.gsub File::SEPARATOR, '' # protect against directory attacks
-      solution = File.expand_path id + Aladdin::SOLUTION_EXT, Aladdin::DATA_DIR
+      solution = File.expand_path id + Spirit::SOLUTION_EXT, Spirit::SOLUTION_DIR
       File.open(solution, 'rb') { |f| same? @params['answer'], Marshal.restore(f) }.to_json
     rescue => e
       logger.warn e.message

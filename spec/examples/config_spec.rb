@@ -1,52 +1,43 @@
 require 'spec_helper'
 
-describe 'Config' do
+describe Aladdin::Config do
 
-  context 'given a configuration file' do
+  let(:dir)    { Pathname.new Dir.mktmpdir }
+  after(:each) { FileUtils.remove_entry_secure dir }
 
-    before :each  do
-      @dir = Dir.mktmpdir
+  subject      { Aladdin::Config.new(dir) }
+
+  context 'given an empty manifest' do
+    before(:each) { IO.write dir + Spirit::MANIFEST, '---' }
+    it { should eql(Aladdin::Config::DEFAULTS) }
+  end
+
+  context 'missing manifest' do
+    it 'raises a ConfigError' do
+      msg = "We expected a manifest file at #{dir + Spirit::MANIFEST}"
+      expect { Aladdin::Config.new dir }.to raise_error Aladdin::ConfigError, /#{msg}/
     end
+  end
 
-    after :each do
-      FileUtils.remove_entry_secure @dir
+  context 'given an unreadable manifest' do
+    before(:each) { IO.write dir + Spirit::MANIFEST, '{}', perm: 0333 }
+    it 'raises a ConfigError' do
+      msg = "We found a manifest file at #{dir + Spirit::MANIFEST}, but couldn't open it"
+      expect { Aladdin::Config.new dir }.to raise_error Aladdin::ConfigError, /#{msg}/
     end
+  end
 
-    it 'should use the defaults if the file is empty' do
-      IO.write File.join(@dir, Aladdin::Config::FILE), '{}'
-      config = Aladdin::Config.new @dir
-      config.should eql(Aladdin::Config::DEFAULTS)
+  context 'given an invalid manifest' do
+    before(:each) { IO.write dir + Spirit::MANIFEST, 'abc:def' }
+    it 'raises a ConfigError' do
+      msg = "We found a manifest file at #{dir + Spirit::MANIFEST}, but couldn't parse it"
+      expect { Aladdin::Config.new dir }.to raise_error Aladdin::ConfigError, /#{msg}/
     end
+  end
 
-    it 'should raise a ConfigError if the file is missing' do
-      expect { Aladdin::Config.new @dir }.to raise_error Aladdin::ConfigError
-    end
-
-    it 'should raise a ConfigError if the file is not readable' do
-      file = File.join @dir, Aladdin::Config::FILE
-      IO.write file, '{}', perm: 0333
-      expect { Aladdin::Config.new @dir }.to raise_error Aladdin::ConfigError
-      FileUtils.rm file
-      IO.write file, '{}', perm: 0666
-      expect { Aladdin::Config.new @dir }.to_not raise_error
-    end
-
-    it 'should raise a ConfigError if the file does not contain valid JSON' do
-      IO.write File.join(@dir, Aladdin::Config::FILE), '{', perm: 0333
-      expect { Aladdin::Config.new @dir}.to raise_error Aladdin::ConfigError
-    end
-
-    it 'should raise a ConfigError if the values have the incorrect type' do
-      IO.write File.join(@dir, Aladdin::Config::FILE), {title: 2.0}.to_json
-      expect { Aladdin::Config.new @dir}.to raise_error Aladdin::ConfigError
-    end
-
-    it 'should override the defaults with the user supplied values' do
-      IO.write File.join(@dir, Aladdin::Config::FILE), {title: '2.0'}.to_json
-      config = Aladdin::Config.new @dir
-      config[:title].should eq '2.0'
-    end
-
+  context 'given a good manifest' do
+    before(:each) { IO.write dir + Spirit::MANIFEST, {title: '2.0'}.to_yaml }
+    its([:title]) { should eq '2.0' }
   end
 
 end

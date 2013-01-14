@@ -1,6 +1,5 @@
 # ~*~ encoding: utf-8 ~*~
 require 'aladdin/support/core_ext'
-require 'aladdin/support/logger'
 require 'aladdin/support/weak_comparator'
 require 'aladdin/support/multiroute'
 
