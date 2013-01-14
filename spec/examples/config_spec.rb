@@ -37,10 +37,7 @@ describe Aladdin::Config do
 
   context 'given a good manifest' do
     before(:each) { IO.write dir + Spirit::MANIFEST, {title: '2.0'}.to_yaml }
-    it 'overrides the defaults with the user-supplied values' do
-      config = Aladdin::Config.new dir
-      config[:title].should eq '2.0'
-    end
+    its([:title]) { should eq '2.0' }
   end
 
 end
