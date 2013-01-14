@@ -6,10 +6,13 @@ require 'aladdin/support'
 module Aladdin
   extend self
 
+  # @!attribute [r] config
+  #   @return [Hash] configuration hash
   attr_accessor :config
 
   # Prepares to launch the previewer app by configuring sinatra.
   # @option opts [String] from (Dir.pwd)   path to author's markdown documents
+  # @return [void]
   def prepare(opts = {})
     root = opts[:from] || Dir.pwd
     @config = Config.new root
@@ -19,6 +22,7 @@ module Aladdin
   end
 
   # Launches the previewer app.
+  # @return [void]
   def launch(opts = {})
     prepare opts
     Aladdin::App.run!
