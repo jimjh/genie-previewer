@@ -40,6 +40,9 @@ end
 RSpec.configure do |config|
   config.before(:all) { silence_output }
   config.after(:all)  { enable_output }
+  config.treat_symbols_as_metadata_keys_with_true_values = true
+  config.run_all_when_everything_filtered = true
+  config.filter_run :focus
 end
 
 require_relative 'shared/app_context'
