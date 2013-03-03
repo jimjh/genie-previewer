@@ -1,6 +1,6 @@
+# ~*~ encoding: utf-8 ~*~
 require 'json'
 
-# ~*~ encoding: utf-8 ~*~
 module Aladdin
 
   module Support
