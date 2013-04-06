@@ -80,7 +80,27 @@
   %script{src: 'assets/foundation/app.js'}
 
   -# mathjax
-  %script{src: 'https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'}
+  %script{type: 'text/x-mathjax-config'}
+    :plain
+      MathJax.Hub.Config({
+        'HTML-CSS': {
+          preferredFont: 'TeX',
+          linebreaks: { automatic: true },
+          EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+        },
+        tex2jax: {
+          inlineMath: [ ['$', '$'], ['\\\\(', '\\\\)'] ],
+          displayMath: [ ['$$', '$$'], ['\\[', '\\]'] ],
+          processEscapes: true,
+          ignoreClass: 'tex2jax_ignore|dno'
+        },
+        TeX: {
+          noUndefined: { attributes: { mathcolor: 'red', mathbackground: '#FFEEEE', mathsize: '90%' } }
+        },
+        messageStyle: 'none'
+      });
+
+  %script{src: 'https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS_HTML'}
   %script{src: 'assets/app.min.js'}
 
 :plain
