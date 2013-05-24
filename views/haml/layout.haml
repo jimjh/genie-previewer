@@ -1,15 +1,19 @@
 -# coding: UTF-8
 !!! 5
 
--# paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/
-/[if IE 8]
-  <html class='no-js lt-ie9' lang='en'>
-:plain
-  <!--[if gt IE 8]><!--><html class='no-js' lang='en'><!--<![endif]-->
+/ paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/
+/[if lt IE 7 ] <html class=\'ie6\' lang=\'en\'>
+/[if IE 7 ]    <html class=\'ie7\' lang=\'en\'>
+/[if IE 8 ]    <html class=\'ie8\' lang=\'en\'>
+/[if IE 9 ]    <html class=\'ie9\' lang=\'en\'>
+/[if (gt IE 9)|!(IE)] <!--> <html lang=\'en\'>
 
 %head
   %meta{charset: 'utf-8'}
-  %meta{name: 'viewport', content: 'width=device-width'}
+  %meta{name: 'viewport', content: 'width=device-width, initial-scale=1.0'}
+  %meta{'http-equiv' => 'no-cache'}
+  %meta{'http-equiv' => 'Expires', content: '-1'}
+  %meta{'http-equiv' => 'Cache-Control', content: 'no-cache'}
 
   %title= title
   %link{rel: 'stylesheet', href:'/assets/application.css'}
@@ -22,43 +26,44 @@
 %body
 
   .row
+    .large-12.columns
 
-    %section{role: 'complementary'}
-      .row
-        .large-6.columns
-          %h1= title
-          %h4
-            <!-- TODO: user gravatar -->
-            %img{src: '/assets/no_gravatar.gif', width: 20, height: 20, alt: 'John Doe'}
-            <!-- TOOD: user name -->
-            %small John Doe
-          %h4.subheader= description
-          %div.panel.meta
-            %h6.subheader Dec 18, 2012 12:00PM
-            %ul.inline-list
-              -categories.each do |category|
-                %li
-                  %a{href: '#'}=category
-        .large-6.columns
-          %h1
-            %a.th.hero{href: '#'}
-              <!-- TODO: graphic from user's repo -->
-              %img{src: '/assets/graphic.png'}
+      %section{role: 'complementary'}
+        .row
+          .large-6.columns
+            %h1= title
+            %h4
+              <!-- TODO: user gravatar -->
+              %img{src: '/assets/no_gravatar.gif', width: 20, height: 20, alt: 'John Doe'}
+              <!-- TOOD: user name -->
+              %small John Doe
+            %h4.subheader= description
+            %div.panel.meta
+              %h6.subheader Dec 18, 2012 12:00PM
+              %ul.inline-list
+                -categories.each do |category|
+                  %li
+                    %a{href: '#'}=category
+          .large-6.columns
+            %h1
+              %a.th.hero{href: '#'}
+                <!-- TODO: graphic from user's repo -->
+                %img{src: '/assets/graphic.png'}
 
-    %hr/
-    %section{role: 'lesson'}
-      .row
-        .twelve.columns
-          !=yield # output is sanitized by the sanitize gem
+      %hr/
+      %section{role: 'lesson'}
+        .row
+          .large-12.columns
+            !=yield # output is sanitized by the sanitize gem
 
-    %hr/
+      %hr/
 
-    .row#footer
-      .ten.columns
-        .radius.progress.success.ten
-          %span.meter.eight 80%
-      .two.columns
-        %span <!-- TODO: score goes here -->
+      .row#footer
+        .large-10.columns
+          .radius.progress.success.large-10
+            %span.meter.large-8 80%
+        .large-2.columns
+          %span <!-- TODO: score goes here -->
 
   -# foundation
   %script{src: 'assets/foundation/jquery.js'}
@@ -102,6 +107,8 @@
 
   %script{src: 'https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS_HTML'}
   %script{src: 'assets/app.min.js'}
+  :javascript
+    $(genie.init_problems());
 
 :plain
   </html>
