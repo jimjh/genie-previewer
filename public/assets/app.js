@@ -9,10 +9,32 @@ Copyright (c) 2012-2013 Jiunn Haur Lim, Carnegie Mellon University
 
 
 (function() {
-  var Problem, genie, init_pagination, init_scroll,
+  var NavigationBar, Problem, genie, init_pagination, init_scroll,
     __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   genie = (typeof exports !== "undefined" && exports !== null) && this || (this.genie = {});
+
+  NavigationBar = (function() {
+
+    function NavigationBar(bar, anchor) {
+      this.ele = $(bar);
+      this.top = $(anchor).offset().top;
+    }
+
+    NavigationBar.prototype.stick = function() {
+      var _this = this;
+      return $(window).scroll(function() {
+        if (window.scrollY >= _this.top) {
+          return _this.ele.css('top', 0);
+        } else {
+          return _this.ele.css('top', '-50px');
+        }
+      });
+    };
+
+    return NavigationBar;
+
+  })();
 
   Problem = (function() {
 
@@ -126,7 +148,7 @@ Copyright (c) 2012-2013 Jiunn Haur Lim, Carnegie Mellon University
     y = problems.offset().top;
     w = problems.outerWidth();
     $(window).scroll(function() {
-      if (window.scrollY >= y - 99) {
+      if (window.scrollY >= y) {
         problems.addClass('sticky');
         return problems.css('width', w);
       } else {
@@ -153,8 +175,11 @@ Copyright (c) 2012-2013 Jiunn Haur Lim, Carnegie Mellon University
   };
 
   this.genie.init_problems = function() {
+    var nav;
     init_scroll();
-    return init_pagination();
+    init_pagination();
+    nav = new NavigationBar('.lesson-nav', 'section[role="lesson"]');
+    return nav.stick();
   };
 
   this.genie.init_lesson = function(options) {
@@ -171,11 +196,11 @@ Copyright (c) 2012-2013 Jiunn Haur Lim, Carnegie Mellon University
       problem = new Problem(form, answers[pos]);
       problem.observe();
     }
-    this.genie.init_problems;
+    this.init_problems();
     return null;
   };
 
-  this.genie.launch = function() {
+  $(function() {
     return $.ajaxSetup({
       beforeSend: function(xhr) {
         var token;
@@ -183,8 +208,6 @@ Copyright (c) 2012-2013 Jiunn Haur Lim, Carnegie Mellon University
         return xhr.setRequestHeader('X-CSRF-Token', token);
       }
     });
-  };
-
-  $(this.genie.launch);
+  });
 
 }).call(this);
