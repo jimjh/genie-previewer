@@ -25,7 +25,7 @@
 
 %body
 
-  .row
+  .row.full-width
     .large-12.columns
 
       %section.row{role: 'complementary'}
@@ -107,7 +107,7 @@
   %script{src: 'assets/jquery.jqpagination.js'}
   %script{src: 'assets/app.min.js'}
   :javascript
-    $(genie.init_problems());
+    $(genie.init_lesson({answers: []}));
 
 :plain
   </html>
